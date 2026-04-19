@@ -6,7 +6,7 @@
     @php(do_action('get_header'))
     @php(wp_head())
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/decklist.js'])
   </head>
 
   <body @php(body_class())>
@@ -34,5 +34,6 @@
 
     @php(do_action('get_footer'))
     @php(wp_footer())
+    @stack('scripts')
   </body>
 </html>

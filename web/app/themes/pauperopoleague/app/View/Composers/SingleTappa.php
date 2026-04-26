@@ -11,15 +11,17 @@ class SingleTappa extends Composer
     public function with(): array
     {
         return [
-            'tappa_id'        => $this->tappa_id(),
-            'titolo'          => $this->titolo(),
-            'data_inizio_tappa' => $this->data_inizio_tappa(),
-            'data_inizio_iso' => $this->data_inizio_iso(),
-            'tappa_aperta'    => $this->tappa_aperta(),
-            'tappa_conclusa'  => $this->tappa_conclusa(),
-            'mazzi_top8'      => $this->mazzi_top8(),
-            'archetype_stats' => $this->archetype_stats(),
-            'card_stats'      => $this->card_stats(),
+            'tappa_id'           => $this->tappa_id(),
+            'titolo'             => $this->titolo(),
+            'data_inizio_tappa'  => $this->data_inizio_tappa(),
+            'data_inizio_iso'    => $this->data_inizio_iso(),
+            'tappa_aperta'       => $this->tappa_aperta(),
+            'tappa_conclusa'     => $this->tappa_conclusa(),
+            'mazzi_top8'         => $this->mazzi_top8(),
+            'archetype_stats'    => $this->archetype_stats(),
+            'card_stats'         => $this->card_stats(),
+            'classifica_finale'       => $this->classifica_finale(),
+            'numero_partecipanti'     => $this->numero_partecipanti(),
         ];
     }
 
@@ -114,6 +116,34 @@ class SingleTappa extends Composer
 
         arsort($averages);
         return \array_slice($averages, 0, 10, true);
+    }
+
+    public function numero_partecipanti(): ?int
+    {
+        $val = get_field('numero_partecipanti');
+        return $val !== null && $val !== '' ? (int) $val : null;
+    }
+
+    public function classifica_finale(): array
+    {
+        $rows = get_field('classifica_finale');
+        if (empty($rows)) return [];
+
+        return array_values(array_map(function (array $row, int $i): array {
+            $v = (int) ($row['vittorie'] ?? 0);
+            $s = (int) ($row['sconfitte'] ?? 0);
+            $p = (int) ($row['pareggi'] ?? 0);
+
+            return [
+                'posizione' => $i + 1,
+                'nome'      => $row['nome'] ?? '',
+                'punti'     => $row['punti'] ?? '',
+                'vsp'       => "{$v}-{$s}-{$p}",
+                'via'       => isset($row['via'])  ? number_format((float) $row['via'],  2) : '',
+                'vp'        => isset($row['vp'])   ? number_format((float) $row['vp'],   2) : '',
+                'vpa'       => isset($row['vpa'])  ? number_format((float) $row['vpa'],  2) : '',
+            ];
+        }, $rows, array_keys($rows)));
     }
 
     public static function parseMazzoLines(string $mazzo): array

@@ -7,7 +7,7 @@
     $lega_url   = (!is_wp_error($leghe) && !empty($leghe)) ? get_term_link($leghe[0]) : null;
   @endphp
 
-  <article @php(post_class('inner-dark'))>
+  <article class="{!! implode(' ', get_post_class('inner-dark')) !!}">
     <div class="container mx-auto px-4">
 
       {{-- Page header --}}
@@ -47,7 +47,7 @@
       </div>
 
       {{-- Optional WordPress content --}}
-      @php($content = get_the_content())
+      @php $content = get_the_content(); @endphp
       @if($content)
         <div style="color:var(--color-neutral-300);font-size:0.9375rem;line-height:1.7;margin-bottom:2.5rem;max-width:640px;">
           {!! apply_filters('the_content', $content) !!}
@@ -55,6 +55,55 @@
       @endif
 
       @if($tappa_conclusa)
+
+        {{-- ── Classifica finale ──────────────────────────── --}}
+        @if($classifica_finale)
+          <div style="margin-bottom:3rem;">
+            <div class="inner-section-header">
+              <p class="inner-section-header__label">Classifica finale</p>
+              @if($numero_partecipanti)
+                <span class="badge badge-standard">{{ $numero_partecipanti }} giocatori</span>
+              @endif
+            </div>
+
+            <div style="overflow-x:auto;">
+              <table class="standings-table">
+                <thead>
+                  <tr>
+                    <th class="standings-table__th standings-table__th--pos">#</th>
+                    <th class="standings-table__th standings-table__th--nome">Giocatore</th>
+                    <th class="standings-table__th standings-table__th--num">Punti</th>
+                    <th class="standings-table__th standings-table__th--num">V/S/P</th>
+                    <th class="standings-table__th standings-table__th--num">%VIA</th>
+                    <th class="standings-table__th standings-table__th--num">%VP</th>
+                    <th class="standings-table__th standings-table__th--num">%VPA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($classifica_finale as $row)
+                    @php
+                      if ($loop->index === 0)      { $medal_icon = '🥇'; $medal_class = 'standings-table__row--gold'; }
+                      elseif ($loop->index === 1)  { $medal_icon = '🥈'; $medal_class = 'standings-table__row--silver'; }
+                      elseif ($loop->index === 2)  { $medal_icon = '🥉'; $medal_class = 'standings-table__row--bronze'; }
+                      else                         { $medal_icon = null;  $medal_class = ''; }
+                    @endphp
+                    <tr class="standings-table__row {{ $medal_class }}">
+                      <td class="standings-table__td standings-table__td--pos">{{ $row['posizione'] }}</td>
+                      <td class="standings-table__td standings-table__td--nome">
+                        @if($medal_icon)<span aria-hidden="true" style="margin-right:0.3rem;">{{ $medal_icon }}</span>@endif{{ $row['nome'] }}
+                      </td>
+                      <td class="standings-table__td standings-table__td--num">{{ $row['punti'] }}</td>
+                      <td class="standings-table__td standings-table__td--num">{{ $row['vsp'] }}</td>
+                      <td class="standings-table__td standings-table__td--num">{{ $row['via'] }}</td>
+                      <td class="standings-table__td standings-table__td--num">{{ $row['vp'] }}</td>
+                      <td class="standings-table__td standings-table__td--num">{{ $row['vpa'] }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+        @endif
 
         {{-- ── Top 8 ──────────────────────────────────────── --}}
         @if($mazzi_top8)
@@ -107,7 +156,7 @@
             <div class="hp-two-col__grid">
 
               @if($archetype_stats)
-                @php($max_arch = max(array_values($archetype_stats)))
+                @php $max_arch = max(array_values($archetype_stats)); @endphp
                 <div class="metagame-panel">
                   <p class="metagame-panel__title">Archetipi</p>
                   @foreach($archetype_stats as $name => $count)
@@ -123,7 +172,7 @@
               @endif
 
               @if($card_stats)
-                @php($max_avg = max(array_values($card_stats)))
+                @php $max_avg = max(array_values($card_stats)); @endphp
                 <div class="metagame-panel">
                   <p class="metagame-panel__title">Carte più giocate</p>
                   @foreach($card_stats as $name => $avg)

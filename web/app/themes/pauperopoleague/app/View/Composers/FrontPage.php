@@ -166,12 +166,12 @@ class FrontPage extends Composer
                 ? ((int) $dt->format('j') . ' ' . $mesi[(int) $dt->format('n') - 1])
                 : null;
 
-            $mazzi = get_field('mazzi', $post->ID) ?: [];
+            $n = get_field('numero_partecipanti', $post->ID);
 
             return [
                 'titolo'      => get_the_title($post->ID),
                 'data_label'  => $data_label,
-                'n_giocatori' => \count($mazzi),
+                'n_giocatori' => $n !== null && $n !== '' ? (int) $n : null,
                 'permalink'   => get_permalink($post->ID),
             ];
         }, $tappe);

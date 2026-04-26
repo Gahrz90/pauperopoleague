@@ -165,7 +165,9 @@
               @endif
             </div>
             <h3 class="hp-tcard__name">{{ $tappa['titolo'] }}</h3>
-            <p class="hp-tcard__players">{{ $tappa['n_giocatori'] }} giocatori</p>
+            @if ($tappa['n_giocatori'] !== null)
+              <p class="hp-tcard__players">{{ $tappa['n_giocatori'] }} giocatori</p>
+            @endif
           </a>
         @empty
           <p class="hp-tcard__players" style="color:var(--color-neutral-400);">Nessuna tappa conclusa.</p>

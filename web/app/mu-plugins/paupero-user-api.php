@@ -76,7 +76,113 @@ add_action('rest_api_init', function () {
             ],
         ],
     ]);
+
+    register_rest_route('paupero/v1', '/profile', [
+        [
+            'methods'             => 'GET',
+            'callback'            => 'paupero_get_profile',
+            'permission_callback' => 'is_user_logged_in',
+        ],
+        [
+            'methods'             => 'POST',
+            'callback'            => 'paupero_update_profile',
+            'permission_callback' => 'is_user_logged_in',
+            'args'                => [
+                'nome'          => ['sanitize_callback' => 'sanitize_text_field'],
+                'cognome'       => ['sanitize_callback' => 'sanitize_text_field'],
+                'bio'           => ['sanitize_callback' => 'sanitize_textarea_field'],
+                'mazzi_giocati' => ['sanitize_callback' => 'sanitize_textarea_field'],
+                'data_nascita'  => ['sanitize_callback' => 'sanitize_text_field'],
+                'cellulare'     => ['sanitize_callback' => 'sanitize_text_field'],
+            ],
+        ],
+    ]);
+
+    register_rest_route('paupero/v1', '/profile/password', [
+        'methods'             => 'POST',
+        'callback'            => 'paupero_change_password',
+        'permission_callback' => 'is_user_logged_in',
+        'args'                => [
+            'current_password'     => ['required' => true],
+            'new_password'         => ['required' => true],
+            'confirm_new_password' => ['required' => true],
+        ],
+    ]);
 });
+
+function paupero_get_profile(): WP_REST_Response {
+    $user = wp_get_current_user();
+    return new WP_REST_Response([
+        'nome'          => $user->first_name,
+        'cognome'       => $user->last_name,
+        'email'         => $user->user_email,
+        'bio'           => $user->description,
+        'data_nascita'  => get_user_meta($user->ID, 'paupero_data_nascita', true),
+        'cellulare'     => get_user_meta($user->ID, 'paupero_cellulare', true),
+        'mazzi_giocati' => get_user_meta($user->ID, 'paupero_mazzi_giocati', true),
+    ], 200);
+}
+
+function paupero_update_profile(WP_REST_Request $request): WP_REST_Response|WP_Error {
+    $user    = wp_get_current_user();
+    $user_id = $user->ID;
+    $nome    = $request->get_param('nome');
+    $cognome = $request->get_param('cognome');
+
+    $update_data = ['ID' => $user_id];
+    if ($nome !== null)    $update_data['first_name'] = $nome;
+    if ($cognome !== null) $update_data['last_name']  = $cognome;
+    if ($request->get_param('bio') !== null) {
+        $update_data['description'] = $request->get_param('bio');
+    }
+    if ($nome !== null || $cognome !== null) {
+        $first = $nome ?? $user->first_name;
+        $last  = $cognome ?? $user->last_name;
+        $update_data['display_name'] = trim("$first $last") ?: $user->user_login;
+    }
+
+    if (count($update_data) > 1) {
+        $result = wp_update_user($update_data);
+        if (is_wp_error($result)) {
+            return new WP_Error('update_failed', $result->get_error_message(), ['status' => 500]);
+        }
+    }
+
+    if ($request->get_param('data_nascita') !== null) {
+        update_user_meta($user_id, 'paupero_data_nascita', $request->get_param('data_nascita'));
+    }
+    if ($request->get_param('cellulare') !== null) {
+        update_user_meta($user_id, 'paupero_cellulare', $request->get_param('cellulare'));
+    }
+    if ($request->get_param('mazzi_giocati') !== null) {
+        update_user_meta($user_id, 'paupero_mazzi_giocati', $request->get_param('mazzi_giocati'));
+    }
+
+    return new WP_REST_Response(['success' => true, 'message' => 'Profilo aggiornato con successo.'], 200);
+}
+
+function paupero_change_password(WP_REST_Request $request): WP_REST_Response|WP_Error {
+    $user             = wp_get_current_user();
+    $current_password = $request->get_param('current_password');
+    $new_password     = $request->get_param('new_password');
+    $confirm_password = $request->get_param('confirm_new_password');
+
+    if (!wp_check_password($current_password, $user->user_pass, $user->ID)) {
+        return new WP_Error('wrong_password', 'La password attuale non è corretta.', ['status' => 401]);
+    }
+    if ($new_password !== $confirm_password) {
+        return new WP_Error('password_mismatch', 'Le password non corrispondono.', ['status' => 422]);
+    }
+    if (strlen($new_password) < 8) {
+        return new WP_Error('password_too_short', 'La password deve essere di almeno 8 caratteri.', ['status' => 422]);
+    }
+
+    wp_set_password($new_password, $user->ID);
+    wp_set_current_user($user->ID);
+    wp_set_auth_cookie($user->ID, true);
+
+    return new WP_REST_Response(['success' => true, 'message' => 'Password aggiornata con successo.'], 200);
+}
 
 function paupero_login_user(WP_REST_Request $request): WP_REST_Response|WP_Error {
     $email    = $request->get_param('email');

@@ -4,9 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const app = document.getElementById('decklist-app');
   if (app) {
-    const tappaId = app.dataset.tappaId;
-    const restUrl = app.dataset.restUrl;
-    const nonce   = app.dataset.restNonce;
+    const tappaId  = app.dataset.tappaId;
+    const restUrl  = app.dataset.restUrl;
+    const nonce    = app.dataset.restNonce;
+    const userNome = app.dataset.userNome || '';
 
     const stepCodice   = document.getElementById('step-codice');
     const inputCodice  = document.getElementById('codice-tappa');
@@ -102,6 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
       counterEl.textContent = max - sumQty(rowsEl);
     }
 
+    function refreshRowButtons(rowsEl) {
+      const rows = [...rowsEl.querySelectorAll('.decklist__row')];
+      rows.forEach((row, i) => {
+        row.querySelector('.btn--row-add').hidden    = i !== rows.length - 1;
+        row.querySelector('.btn--row-remove').hidden = rows.length === 1;
+      });
+    }
+
     function addRow(rowsEl, counterEl, max, insertAfter = null) {
       const row = document.createElement('div');
       row.className = 'decklist__row';
@@ -129,7 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
       removeBtn.className   = 'btn--row-action btn--row-remove';
       removeBtn.textContent = '×';
       removeBtn.setAttribute('aria-label', 'Rimuovi');
-      removeBtn.addEventListener('click', () => { row.remove(); refreshCounter(rowsEl, counterEl, max); });
+      removeBtn.addEventListener('click', () => {
+        row.remove();
+        refreshCounter(rowsEl, counterEl, max);
+        refreshRowButtons(rowsEl);
+      });
 
       const plusBtn = document.createElement('button');
       plusBtn.type        = 'button';
@@ -144,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       row.append(qty, nameWrap, removeBtn, plusBtn);
       insertAfter ? insertAfter.after(row) : rowsEl.appendChild(row);
       refreshCounter(rowsEl, counterEl, max);
+      refreshRowButtons(rowsEl);
       return row;
     }
 
@@ -193,7 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
         otherInput.type        = 'text';
         otherInput.id          = 'archetipo-altro';
         otherInput.placeholder = 'Specifica archetipo...';
+        otherInput.className   = 'form-input';
         otherInput.hidden      = true;
+        otherInput.style.marginTop = '0.5rem';
         inputArchetipo.after(otherInput);
 
         inputArchetipo.addEventListener('change', () => {
@@ -224,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
         codiceVerificato  = codice;
         stepCodice.hidden = true;
         stepForm.hidden   = false;
+        if (userNome && !inputGiocatore.value) inputGiocatore.value = userNome;
         populateArchetypes();
       } catch {
         showError(erroreCodice, 'Errore di rete. Riprova.');
@@ -273,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── Card hover preview ─────────────────────────────────────────────────────
 
-  const cardNames = document.querySelectorAll('.card-name');
+  const cardNames = document.querySelectorAll('[data-card]');
   if (cardNames.length) {
     const tooltip = document.createElement('div');
     tooltip.className = 'card-preview';

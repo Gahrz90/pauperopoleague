@@ -21,6 +21,7 @@ export default defineConfig({
         'resources/js/decklist.js',
         'resources/js/register.js',
         'resources/js/login.js',
+        'resources/js/profile.js',
       ],
       refresh: true,
     }),

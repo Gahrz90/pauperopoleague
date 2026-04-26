@@ -29,7 +29,7 @@
                 @if($tappa_conclusa)
                   Conclusa il {{ $data_inizio_tappa }}
                 @else
-                  Apertura: {{ $data_inizio_tappa }}
+                  Orario d'inizio tappa: {{ $data_inizio_tappa }}
                 @endif
               </p>
             @endif
@@ -151,6 +151,7 @@
           data-tappa-id="{{ $tappa_id }}"
           data-rest-url="{{ rest_url('paupero/v1/decklist') }}"
           data-rest-nonce="{{ wp_create_nonce('wp_rest') }}"
+          data-user-nome="{{ is_user_logged_in() ? wp_get_current_user()->display_name : '' }}"
         >
 
           {{-- Step 1: verify code --}}
@@ -172,7 +173,7 @@
               >
             </div>
 
-            <button type="button" id="btn-verifica-codice" class="btn btn-gold">
+            <button type="button" id="btn-verifica-codice" class="btn btn-gold btn-lg reg-submit">
               Verifica codice
             </button>
 
@@ -228,7 +229,7 @@
               </div>
             </div>
 
-            <button type="button" id="btn-invia-decklist" class="btn btn-gold btn-lg" style="width:100%;justify-content:center;">
+            <button type="button" id="btn-invia-decklist" class="btn btn-gold btn-lg reg-submit">
               Invia Decklist
             </button>
 

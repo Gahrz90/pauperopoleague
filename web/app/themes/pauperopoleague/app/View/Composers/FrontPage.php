@@ -11,10 +11,41 @@ class FrontPage extends Composer
     public function with(): array
     {
         return [
-            'legheCount'    => $this->legheCount(),
-            'prossimaTappa' => $this->prossimaTappa(),
-            'tappeRecenti'  => $this->tappeRecenti(),
+            'legheCount'         => $this->legheCount(),
+            'giocatoriCount'     => $this->giocatoriCount(),
+            'giocatoriMedi'      => $this->giocatoriMediATappa(),
+            'prossimaTappa'      => $this->prossimaTappa(),
+            'tappeRecenti'       => $this->tappeRecenti(),
         ];
+    }
+
+    public function giocatoriCount(): int
+    {
+        return (int) count_users()['total_users'];
+    }
+
+    public function giocatoriMediATappa(): int
+    {
+        $tappe = get_posts([
+            'post_type'      => 'tappa',
+            'posts_per_page' => -1,
+            'meta_query'     => [[
+                'key'     => 'tappa_conclusa',
+                'value'   => '1',
+                'compare' => '=',
+            ]],
+        ]);
+
+        if (empty($tappe)) {
+            return 0;
+        }
+
+        $totale = array_sum(array_map(function ($post) {
+            $mazzi = get_field('mazzi', $post->ID) ?: [];
+            return \count($mazzi);
+        }, $tappe));
+
+        return (int) round($totale / \count($tappe));
     }
 
     public function legheCount(): int

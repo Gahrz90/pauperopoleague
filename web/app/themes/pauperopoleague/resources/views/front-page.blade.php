@@ -29,7 +29,7 @@
     <div class="container mx-auto px-4">
       <div class="hp-stats__grid">
         <div class="hp-stat">
-          <span class="hp-stat__number">142</span>
+          <span class="hp-stat__number">{{ $giocatoriCount }}</span>
           <span class="hp-stat__label">GIOCATORI</span>
         </div>
         <div class="hp-stat">
@@ -37,7 +37,7 @@
           <span class="hp-stat__label">LEGHE ORGANIZZATE</span>
         </div>
         <div class="hp-stat">
-          <span class="hp-stat__number">38</span>
+          <span class="hp-stat__number">{{ $giocatoriMedi }}</span>
           <span class="hp-stat__label">GIOCATORI MEDI A TAPPA</span>
         </div>
         <div class="hp-stat">
@@ -183,7 +183,7 @@
       <div class="hp-cta-box">
         <h2 class="hp-cta-box__title">Pronto a competere?</h2>
         <p class="hp-cta-box__sub">
-          Unisciti a 142 giocatori nel circuito Pauper più competitivo d'Italia.
+          Unisciti a {{ $giocatoriCount }} giocatori nel circuito Pauper più competitivo d'Italia.
         </p>
         <a href="{{ get_permalink(get_page_by_path('registrazione')) ?: home_url('/registrazione/') }}" class="btn btn-gold btn-lg">Iscriviti alla Community</a>
       </div>

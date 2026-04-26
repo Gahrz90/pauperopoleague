@@ -16,7 +16,9 @@
             <h1 class="inner-dark__title">Le Leghe</h1>
             <p class="inner-dark__sub">Esplora le leghe attive e le tappe in programma.</p>
           </div>
-          @php($legheAttive = array_filter($leghe, fn($l) => !empty($l['tappe'])))
+          @php
+            $legheAttive = array_filter($leghe(), fn($l) => !empty($l['tappe']));
+          @endphp
           @if(count($legheAttive))
             <span class="badge badge-standard">
               {{ count($legheAttive) }} {{ count($legheAttive) === 1 ? 'lega' : 'leghe' }}

@@ -73,10 +73,9 @@ function paupero_verify_code(WP_REST_Request $request): WP_REST_Response|WP_Erro
         return new WP_Error('codice_non_valido', 'Il codice tappa non è corretto.', ['status' => 403]);
     }
 
-    $data_inizio = get_field('data_inizio_tappa', $tappa_id, false);
-    $ts_inizio   = $data_inizio ? strtotime($data_inizio) : false;
-    if ($ts_inizio === false || time() > $ts_inizio) {
-        return new WP_Error('tappa_chiusa', 'Non puoi inserire la decklist.', ['status' => 403]);
+    $conclusa = get_field('tappa_conclusa', $tappa_id);
+    if ($conclusa) {
+        return new WP_Error('tappa_chiusa', 'La tappa è conclusa.', ['status' => 403]);
     }
 
     return new WP_REST_Response(['success' => true], 200);
@@ -136,21 +135,12 @@ function paupero_submit_decklist(WP_REST_Request $request): WP_REST_Response|WP_
         );
     }
 
-    // 2. Verifica finestra temporale (now <= data_inizio_tappa)
-    $data_inizio = get_field('data_inizio_tappa', $tappa_id, false); // raw Y-m-d H:i:s from DB
-    if (empty($data_inizio)) {
-        return new WP_Error(
-            'tappa_non_configurata',
-            'La tappa non ha una data di inizio configurata.',
-            ['status' => 500]
-        );
-    }
-
-    $ts_inizio = strtotime($data_inizio);
-    if ($ts_inizio === false || time() > $ts_inizio) {
+    // 2. Blocca se la tappa è conclusa
+    $conclusa = get_field('tappa_conclusa', $tappa_id);
+    if ($conclusa) {
         return new WP_Error(
             'tappa_chiusa',
-            'Non puoi inserire la decklist.',
+            'La tappa è conclusa.',
             ['status' => 403]
         );
     }

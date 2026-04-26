@@ -3,7 +3,7 @@
 
     {{-- Logo + site name --}}
     <a class="brand flex items-center gap-2.5 no-underline!" href="{{ home_url('/') }}">
-      <img src="@asset('resources/images/logo_pauperopoleague.png')" alt="{{ $siteName }}" class="h-9 w-9 object-contain rounded-full">
+      <img src="@asset('resources/images/logo_pauperopoleague.png')" alt="{{ $siteName }}" class="h-12 w-12 object-contain rounded-full">
       <span class="brand-name">PAUPEROPOLEAGUE</span>
     </a>
 
@@ -20,7 +20,10 @@
       @endif
       @if (is_user_logged_in())
         @php $currentUser = wp_get_current_user(); @endphp
-        <span class="header-user">{{ $currentUser->display_name }}</span>
+        <a href="{{ get_permalink(get_page_by_path('profilo')) ?: home_url('/profilo/') }}"
+           class="user-avatar" aria-label="Il tuo profilo">
+          {{ strtoupper(substr($currentUser->first_name ?: $currentUser->display_name, 0, 1)) }}
+        </a>
         <a href="{{ wp_logout_url(add_query_arg('login_status', 'logged_out', get_permalink(get_page_by_path('login')) ?: home_url('/'))) }}" class="btn btn-gold btn-sm">Esci</a>
       @else
         <a href="{{ get_permalink(get_page_by_path('login')) ?: wp_login_url() }}" class="btn btn-secondary btn-sm">Accedi</a>
@@ -53,8 +56,14 @@
     @endif
     <div class="px-6 mt-6 flex flex-col gap-3">
       @if (is_user_logged_in())
-        @php $currentUser = $currentUser ?? wp_get_current_user(); @endphp
-        <span class="header-user" style="font-size:0.875rem;">{{ $currentUser->display_name }}</span>
+        @php $currentUser ??= wp_get_current_user(); @endphp
+        <div class="flex items-center gap-3 mb-2">
+          <a href="{{ get_permalink(get_page_by_path('profilo')) ?: home_url('/profilo/') }}"
+             class="user-avatar" aria-label="Il tuo profilo">
+            {{ strtoupper(substr($currentUser->first_name ?: $currentUser->display_name, 0, 1)) }}
+          </a>
+          <span style="font-size:0.875rem;color:var(--color-neutral-300);font-weight:500;">{{ $currentUser->display_name }}</span>
+        </div>
         <a href="{{ wp_logout_url(add_query_arg('login_status', 'logged_out', get_permalink(get_page_by_path('login')) ?: home_url('/'))) }}" class="btn btn-gold btn-sm" style="justify-content:center;">Esci</a>
       @else
         <a href="{{ get_permalink(get_page_by_path('login')) ?: wp_login_url() }}" class="btn btn-secondary btn-sm" style="justify-content:center;">Accedi</a>

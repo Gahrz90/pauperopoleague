@@ -8,7 +8,7 @@
       <div class="inner-dark__header">
         <p class="inner-dark__eyebrow">Lega</p>
         <h1 class="inner-dark__title">{{ single_term_title('', false) }}</h1>
-        @php($descrizione = term_description())
+        @php $descrizione = term_description(); @endphp
         @if($descrizione)
           <div class="inner-dark__sub" style="margin-top:0.5rem;">{!! $descrizione !!}</div>
         @endif
@@ -21,8 +21,9 @@
         </div>
       @else
         <div class="hp-tournaments__grid">
-          @while(have_posts()) @php(the_post())
+          @while(have_posts())
             @php
+              the_post();
               $conclusa_val = get_field('tappa_conclusa');
               $conclusa     = $conclusa_val === true || $conclusa_val === 1 || $conclusa_val === '1';
               $data_raw     = get_field('data_inizio_tappa', null, false);

@@ -89,55 +89,25 @@
         <div class="hp-card">
           <div class="hp-card__header">
             <p class="hp-card__eyebrow" style="margin-bottom:0;">CLASSIFICA LEGA</p>
-            <a href="#" class="hp-card__viewall">Vedi tutto →</a>
+            <a href="{{ $legaUrl }}" class="hp-card__viewall">Vedi tutto →</a>
           </div>
 
           <ol class="hp-standings">
-            <li class="hp-standings__row">
-              <span class="hp-standings__rank">1</span>
-              <span class="hp-standings__avatar">MF</span>
-              <span class="hp-standings__info">
-                <span class="hp-standings__name">Marco Ferretti</span>
-                <span class="hp-standings__record">31V · 8P</span>
-              </span>
-              <span class="hp-standings__pts">847</span>
-            </li>
-            <li class="hp-standings__row">
-              <span class="hp-standings__rank">2</span>
-              <span class="hp-standings__avatar">SB</span>
-              <span class="hp-standings__info">
-                <span class="hp-standings__name">Sofia Bianchi</span>
-                <span class="hp-standings__record">28V · 10P</span>
-              </span>
-              <span class="hp-standings__pts">791</span>
-            </li>
-            <li class="hp-standings__row">
-              <span class="hp-standings__rank">3</span>
-              <span class="hp-standings__avatar">LR</span>
-              <span class="hp-standings__info">
-                <span class="hp-standings__name">Luca Romano</span>
-                <span class="hp-standings__record">26V · 11P</span>
-              </span>
-              <span class="hp-standings__pts">744</span>
-            </li>
-            <li class="hp-standings__row">
-              <span class="hp-standings__rank">4</span>
-              <span class="hp-standings__avatar">GE</span>
-              <span class="hp-standings__info">
-                <span class="hp-standings__name">Giulia Esposito</span>
-                <span class="hp-standings__record">24V · 13P</span>
-              </span>
-              <span class="hp-standings__pts">698</span>
-            </li>
-            <li class="hp-standings__row">
-              <span class="hp-standings__rank">5</span>
-              <span class="hp-standings__avatar">AR</span>
-              <span class="hp-standings__info">
-                <span class="hp-standings__name">Alessandro Ricci</span>
-                <span class="hp-standings__record">22V · 14P</span>
-              </span>
-              <span class="hp-standings__pts">651</span>
-            </li>
+            @forelse ($classificaLega as $player)
+              <li class="hp-standings__row">
+                <span class="hp-standings__rank">{{ $player['posizione'] }}</span>
+                <span class="hp-standings__avatar">{{ $player['iniziali'] }}</span>
+                <span class="hp-standings__info">
+                  <span class="hp-standings__name">{{ $player['nome'] }}</span>
+                  <span class="hp-standings__record">{{ $player['record'] }}</span>
+                </span>
+                <span class="hp-standings__pts">{{ $player['punti'] }}</span>
+              </li>
+            @empty
+              <li class="hp-standings__row" style="justify-content:center;">
+                <span class="hp-standings__record">Nessuna tappa conclusa.</span>
+              </li>
+            @endforelse
           </ol>
         </div>
 
@@ -152,7 +122,7 @@
     <div class="container mx-auto px-4">
       <div class="hp-tournaments__header">
         <h6 class="hp-section-label">TAPPE RECENTI</h6>
-        <a href="#" class="hp-card__viewall">Storia completa →</a>
+        <a href="{{ $legaUrl }}" class="hp-card__viewall">Storia completa →</a>
       </div>
 
       <div class="hp-tournaments__grid">
@@ -176,7 +146,6 @@
       </div>
     </div>
   </section>
-
   {{-- ═══════════════════════════════════════════════════════
        BOTTOM CTA
   ═══════════════════════════════════════════════════════ --}}
@@ -185,7 +154,7 @@
       <div class="hp-cta-box">
         <h2 class="hp-cta-box__title">Pronto a competere?</h2>
         <p class="hp-cta-box__sub">
-          Unisciti a {{ $giocatoriCount }} giocatori nel circuito Pauper più competitivo d'Italia.
+          Unisciti alla community di giocatori nel circuito Pauper più competitivo d'Italia!
         </p>
         <a href="{{ get_permalink(get_page_by_path('registrazione')) ?: home_url('/registrazione/') }}" class="btn btn-gold btn-lg">Iscriviti alla Community</a>
       </div>

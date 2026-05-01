@@ -14,50 +14,94 @@
         @endif
       </div>
 
-      {{-- Tappe grid --}}
-      @if(!have_posts())
-        <div class="hp-card" style="text-align:center;padding:3rem 2rem;">
-          <p style="color:var(--color-neutral-500);margin:0;">Nessuna tappa disponibile per questa lega.</p>
-        </div>
-      @else
-        <div class="hp-tournaments__grid">
-          @while(have_posts())
-            @php
-              the_post();
-              $conclusa_val = get_field('tappa_conclusa');
-              $conclusa     = $conclusa_val === true || $conclusa_val === 1 || $conclusa_val === '1';
-              $data_raw     = get_field('data_inizio_tappa', null, false);
-              $dt           = $data_raw
-                              ? \DateTime::createFromFormat('Y-m-d H:i:s', $data_raw, wp_timezone())
-                              : null;
-              $mesi         = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
-              $data_label   = $dt
-                              ? ($dt->format('d') . ' ' . $mesi[(int)$dt->format('n') - 1] . ' · ' . $dt->format('H:i'))
-                              : null;
-              $n_giocatori  = $conclusa ? count(get_field('mazzi') ?: []) : null;
-            @endphp
-            <a href="{{ get_permalink() }}" class="hp-tcard hp-tcard--link">
-              <div class="hp-tcard__top">
-                @if($conclusa)
-                  <span class="badge badge-standard">Conclusa</span>
-                @else
-                  <span class="badge badge-gold">Aperta</span>
-                @endif
-                @if($data_label)
-                  <span class="hp-tcard__date">{{ $data_label }}</span>
-                @endif
-              </div>
-              <p class="hp-tcard__name">{{ get_the_title() }}</p>
-              @if($n_giocatori !== null)
-                <p class="hp-tcard__players">{{ $n_giocatori }} giocatori partecipanti</p>
-              @else
-                <p class="hp-tcard__players">Iscrizioni aperte</p>
-              @endif
-            </a>
-          @endwhile
-        </div>
-      @endif
+      {{-- Two-column layout: standings left, tappe right --}}
+      <div class="lega-layout">
 
+        {{-- Left: Classifica Lega --}}
+        <div>
+          <div class="inner-section-header">
+            <p class="inner-section-header__label">Classifica Lega</p>
+            @if($classificaLega)
+              <span class="badge badge-standard">{{ count($classificaLega) }} giocatori</span>
+            @endif
+          </div>
+
+          @if($classificaLega)
+            <div style="overflow-x:auto;">
+              <table class="standings-table">
+                <thead>
+                  <tr>
+                    <th class="standings-table__th standings-table__th--pos">#</th>
+                    <th class="standings-table__th standings-table__th--nome">Giocatore</th>
+                    <th class="standings-table__th standings-table__th--num">Punti</th>
+                    <th class="standings-table__th standings-table__th--num">V/S/P</th>
+                    <th class="standings-table__th standings-table__th--num">Tappe</th>
+                    <th class="standings-table__th standings-table__th--num">%VIA</th>
+                    <th class="standings-table__th standings-table__th--num">%VP</th>
+                    <th class="standings-table__th standings-table__th--num">%VPA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($classificaLega as $player)
+                    @php
+                      if ($loop->index === 0)     { $medal_icon = '🥇'; $medal_class = 'standings-table__row--gold'; }
+                      elseif ($loop->index === 1) { $medal_icon = '🥈'; $medal_class = 'standings-table__row--silver'; }
+                      elseif ($loop->index === 2) { $medal_icon = '🥉'; $medal_class = 'standings-table__row--bronze'; }
+                      else                        { $medal_icon = null;  $medal_class = ''; }
+                    @endphp
+                    <tr class="standings-table__row {{ $medal_class }}">
+                      <td class="standings-table__td standings-table__td--pos">{{ $player['posizione'] }}</td>
+                      <td class="standings-table__td standings-table__td--nome">
+                        @if($medal_icon)<span aria-hidden="true" style="margin-right:0.3rem;">{{ $medal_icon }}</span>@endif{{ $player['nome'] }}
+                      </td>
+                      <td class="standings-table__td standings-table__td--num">{{ $player['punti'] }}</td>
+                      <td class="standings-table__td standings-table__td--num">{{ $player['vsp'] }}</td>
+                      <td class="standings-table__td standings-table__td--num">{{ $player['tappe'] }}</td>
+                      <td class="standings-table__td standings-table__td--num">{{ $player['via'] }}</td>
+                      <td class="standings-table__td standings-table__td--num">{{ $player['vp'] }}</td>
+                      <td class="standings-table__td standings-table__td--num">{{ $player['vpa'] }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          @else
+            <p style="color:var(--color-neutral-500);margin:0;">Nessuna tappa conclusa.</p>
+          @endif
+        </div>
+
+        {{-- Right: Tappe concluse --}}
+        <div>
+          <div class="inner-section-header">
+            <p class="inner-section-header__label">Tappe Concluse</p>
+            @if($tappeChiuse)
+              <span class="badge badge-standard">{{ count($tappeChiuse) }}</span>
+            @endif
+          </div>
+
+          @if($tappeChiuse)
+            <div class="lega-tappe-list">
+              @foreach($tappeChiuse as $tappa)
+                <a href="{{ $tappa['permalink'] }}" class="hp-tcard hp-tcard--link">
+                  <div class="hp-tcard__top">
+                    <span class="badge badge-standard">Conclusa</span>
+                    @if($tappa['data_label'])
+                      <span class="hp-tcard__date">{{ $tappa['data_label'] }}</span>
+                    @endif
+                  </div>
+                  <h3 class="hp-tcard__name">{{ $tappa['titolo'] }}</h3>
+                  @if($tappa['n_giocatori'] !== null)
+                    <p class="hp-tcard__players">{{ $tappa['n_giocatori'] }} giocatori partecipanti</p>
+                  @endif
+                </a>
+              @endforeach
+            </div>
+          @else
+            <p style="color:var(--color-neutral-500);margin:0;">Nessuna tappa conclusa.</p>
+          @endif
+        </div>
+
+      </div>
     </div>
   </div>
 @endsection

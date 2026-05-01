@@ -4,12 +4,19 @@
 
 @extends('layouts.app')
 
+@php
+  $theme = is_user_logged_in()
+    ? (get_user_meta(get_current_user_id(), 'paupero_theme', true) ?: 'dimir')
+    : 'dimir';
+@endphp
+
 @push('scripts')
   <script>
     window.pauperoProfile = {
       apiUrl:      '{{ rest_url('paupero/v1/profile') }}',
       passwordUrl: '{{ rest_url('paupero/v1/profile/password') }}',
-      nonce:       '{{ wp_create_nonce('wp_rest') }}'
+      nonce:       '{{ wp_create_nonce('wp_rest') }}',
+      theme:       '{{ esc_js($theme) }}'
     };
   </script>
   @vite('resources/js/profile.js')
@@ -49,6 +56,25 @@
             <p class="profile-email">{{ $user->user_email }}</p>
           </div>
         </div>
+
+        {{-- Theme selector --}}
+        <div class="profile-theme-section">
+          <h2 class="profile-section-title">Tema dell'interfaccia</h2>
+          <div class="reg-form__group" style="max-width: 320px;">
+            <label class="form-label theme-label" for="prof-tema">Gilda</label>
+            <select id="prof-tema" class="form-select">
+              <option value="dimir"   {{ $theme === 'dimir'   ? 'selected' : '' }}>Dimir</option>
+              <option value="azorius" {{ $theme === 'azorius' ? 'selected' : '' }}>Azorius</option>
+              <option value="boros"   {{ $theme === 'boros'   ? 'selected' : '' }}>Boros</option>
+              <option value="golgari" {{ $theme === 'golgari' ? 'selected' : '' }}>Golgari</option>
+              <option value="gruul"   {{ $theme === 'gruul'   ? 'selected' : '' }}>Gruul</option>
+              <option value="simic"   {{ $theme === 'simic'   ? 'selected' : '' }}>Simic</option>
+            </select>
+            <span class="form-hint">Il tema viene applicato immediatamente e salvato automaticamente.</span>
+          </div>
+        </div>
+
+        <hr class="profile-divider">
 
         {{-- Profile data form --}}
         <form id="profile-form" class="reg-form" novalidate>

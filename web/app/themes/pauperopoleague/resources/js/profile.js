@@ -1,6 +1,34 @@
 const cfg = window.pauperoProfile;
 if (!cfg) throw new Error('pauperoProfile config missing');
 
+// ── Theme selector ─────────────────────────────────
+
+const themeSelect = document.getElementById('prof-tema');
+
+if (themeSelect) {
+  const lsTheme = localStorage.getItem('paupero_theme');
+  if (lsTheme && themeSelect.value !== lsTheme) {
+    themeSelect.value = lsTheme;
+  }
+
+  themeSelect.addEventListener('change', async () => {
+    const theme = themeSelect.value;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('paupero_theme', theme);
+
+    try {
+      await fetch(cfg.apiUrl, {
+        method:      'POST',
+        credentials: 'same-origin',
+        headers:     { 'Content-Type': 'application/json', 'X-WP-Nonce': cfg.nonce },
+        body:        JSON.stringify({ theme }),
+      });
+    } catch {
+      // theme already applied locally; server save is best-effort
+    }
+  });
+}
+
 function setFieldError(form, name, msg) {
   const hint  = form.querySelector(`.form-error-msg[data-for="${name}"]`);
   const input = form.querySelector(`[name="${name}"]`);

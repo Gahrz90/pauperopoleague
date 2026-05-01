@@ -94,6 +94,7 @@ add_action('rest_api_init', function () {
                 'mazzi_giocati' => ['sanitize_callback' => 'sanitize_textarea_field'],
                 'data_nascita'  => ['sanitize_callback' => 'sanitize_text_field'],
                 'cellulare'     => ['sanitize_callback' => 'sanitize_text_field'],
+                'theme'         => ['sanitize_callback' => 'sanitize_text_field'],
             ],
         ],
     ]);
@@ -120,6 +121,7 @@ function paupero_get_profile(): WP_REST_Response {
         'data_nascita'  => get_user_meta($user->ID, 'paupero_data_nascita', true),
         'cellulare'     => get_user_meta($user->ID, 'paupero_cellulare', true),
         'mazzi_giocati' => get_user_meta($user->ID, 'paupero_mazzi_giocati', true),
+        'theme'         => get_user_meta($user->ID, 'paupero_theme', true) ?: 'dimir',
     ], 200);
 }
 
@@ -156,6 +158,12 @@ function paupero_update_profile(WP_REST_Request $request): WP_REST_Response|WP_E
     }
     if ($request->get_param('mazzi_giocati') !== null) {
         update_user_meta($user_id, 'paupero_mazzi_giocati', $request->get_param('mazzi_giocati'));
+    }
+
+    $valid_themes = ['dimir', 'azorius', 'boros', 'golgari', 'gruul', 'simic'];
+    $theme = $request->get_param('theme');
+    if ($theme !== null && in_array($theme, $valid_themes, true)) {
+        update_user_meta($user_id, 'paupero_theme', $theme);
     }
 
     return new WP_REST_Response(['success' => true, 'message' => 'Profilo aggiornato con successo.'], 200);

@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      (function(){
+        var valid = ['dimir','azorius','boros','golgari','gruul','simic'];
+        var t = localStorage.getItem('paupero_theme') || {!! json_encode(is_user_logged_in() && in_array(get_user_meta(get_current_user_id(), 'paupero_theme', true), ['dimir','azorius','boros','golgari','gruul','simic'], true) ? get_user_meta(get_current_user_id(), 'paupero_theme', true) : 'dimir') !!};
+        if (!valid.includes(t)) t = 'dimir';
+        document.documentElement.setAttribute('data-theme', t);
+      }());
+    </script>
     @php(do_action('get_header'))
     @php(wp_head())
 

@@ -670,9 +670,6 @@ footer.content-info {
   align-items: center;
   justify-content: center;
   padding: 6rem 1.5rem 5rem;
-  background:
-    radial-gradient(ellipse 80% 55% at 50% 35%, rgba(31, 63, 165, 0.22) 0%, transparent 70%),
-    var(--color-neutral-900);
   text-align: center;
 }
 
@@ -683,9 +680,9 @@ footer.content-info {
   padding: 0.375rem 1.25rem;
   border: 1px solid var(--color-neutral-600);
   border-radius: 9999px;
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   color: var(--color-neutral-300);
   margin-bottom: 1.5rem;
 }
@@ -798,9 +795,9 @@ footer.content-info {
 }
 
 .hp-card__eyebrow {
-  font-size: 0.625rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0;
   color: var(--color-neutral-400);
   margin-bottom: 0.75rem;
   text-transform: uppercase;
@@ -963,9 +960,9 @@ footer.content-info {
 }
 
 .hp-section-label {
-  font-size: 0.625rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0;
   color: var(--color-neutral-300);
   text-transform: uppercase;
   margin: 0;
@@ -1282,9 +1279,9 @@ footer.content-info {
 }
 
 .inner-dark__eyebrow {
-  font-size: 0.625rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0;
   color: var(--color-neutral-400);
   text-transform: uppercase;
   margin: 0 0 0.5rem;
@@ -1317,9 +1314,9 @@ footer.content-info {
 }
 
 .inner-section-header__label {
-  font-size: 0.625rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0;
   color: var(--color-neutral-300);
   text-transform: uppercase;
   margin: 0;
@@ -1911,4 +1908,564 @@ footer.content-info {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+/* ════════════════════════════════════════════════════
+   GUILD THEME GRAPHICS
+   Background gradients, buttons, and heading colors
+   per data-theme. background-attachment:fixed so the
+   gradient is viewport-anchored while content scrolls.
+   ════════════════════════════════════════════════════ */
+
+/* ── Utility: transparent overlay sections so body
+      gradient shows through on the homepage ─────── */
+html[data-theme] body {
+  background-attachment: fixed;
+}
+html[data-theme] body.home,
+html[data-theme] .hp-stats,
+html[data-theme] .hp-two-col,
+html[data-theme] .hp-tournaments,
+html[data-theme] .hp-cta-section {
+  background-color: transparent;
+}
+html[data-theme] .inner-dark,
+html[data-theme] .reg-page {
+  background-color: transparent;
+  background-image: none;
+}
+
+/* ════════════════════════════════════════════════════
+   DIMIR · Deep Blue × Black
+   ════════════════════════════════════════════════════ */
+
+html[data-theme="dimir"] body {
+  background: linear-gradient(160deg, #060810 0%, #0e1d60 45%, #060810 100%);
+}
+
+/* #2952c8 on white → 5.6:1 ✓ AA; border #1a3490 darker for depth */
+html[data-theme="dimir"] .btn-primary {
+  background-color: #2952c8;
+  border-color: #1a3490;
+  color: #ffffff;
+}
+html[data-theme="dimir"] .btn-primary:hover {
+  background-color: #3a6ae0;
+  border-color: #2952c8;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(41, 82, 200, 0.45);
+  transform: translateY(-1px);
+}
+
+html[data-theme="dimir"] .btn-secondary,
+html[data-theme="dimir"] .btn-gold {
+  background-color: #2952c8;
+  border-color: #1a3490;
+  color: #ffffff;
+}
+html[data-theme="dimir"] .btn-secondary:hover,
+html[data-theme="dimir"] .btn-gold:hover {
+  background-color: #3a6ae0;
+  border-color: #2952c8;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(41, 82, 200, 0.45);
+  transform: translateY(-1px);
+}
+
+html[data-theme="dimir"] .user-avatar:hover {
+  border-color: #ffffff;
+}
+
+html[data-theme="dimir"] .form-input:focus,
+html[data-theme="dimir"] .form-select:focus {
+  border-color: #2952c8;
+  box-shadow: 0 0 0 3px rgba(41, 82, 200, 0.2);
+}
+
+html[data-theme="dimir"] .hp-standings__pts {
+  color: #ffffff;
+}
+
+html[data-theme="dimir"] .brand-name {
+  color: #ffffff;
+}
+
+html[data-theme="dimir"] .hp-card__eyebrow,
+html[data-theme="dimir"] .hp-section-label {
+  color: #ffffff;
+  font-size: 0.8125rem;
+}
+
+/* White links on the dark Dimir gradient */
+html[data-theme="dimir"] a {
+  color: #ffffff;
+}
+html[data-theme="dimir"] a:hover {
+  color: #79aeed;
+}
+
+/* ════════════════════════════════════════════════════
+   AZORIUS · Light Blue × Ivory  (light theme)
+   ════════════════════════════════════════════════════ */
+
+html[data-theme="azorius"] body {
+  background: linear-gradient(160deg, #c8dff8 0%, #f7f2e6 55%, #d4e8f5 100%);
+  color: #1a2e5c;
+}
+
+/* Keep cards readable on the light background */
+html[data-theme="azorius"] .hp-card,
+html[data-theme="azorius"] .hp-tcard,
+html[data-theme="azorius"] .lega-card,
+html[data-theme="azorius"] .deck-card,
+html[data-theme="azorius"] .metagame-panel,
+html[data-theme="azorius"] .reg-card,
+html[data-theme="azorius"] .decklist-form-wrap,
+html[data-theme="azorius"] .hp-cta-box,
+html[data-theme="azorius"] .hp-countdown__item {
+  background-color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(30, 79, 168, 0.18);
+  color: #1a2e5c;
+}
+
+/* Gold headings */
+html[data-theme="azorius"] h1,
+html[data-theme="azorius"] h2,
+html[data-theme="azorius"] h3,
+html[data-theme="azorius"] h4,
+html[data-theme="azorius"] .inner-dark__title,
+html[data-theme="azorius"] .hp-card__title,
+html[data-theme="azorius"] .lega-card__title,
+html[data-theme="azorius"] .hp-cta-box__title,
+html[data-theme="azorius"] .reg-title,
+html[data-theme="azorius"] .reg-success__title,
+html[data-theme="azorius"] .profile-section-title,
+html[data-theme="azorius"] .profile-name {
+  color: #c9940f;
+}
+
+/* Dark body text overrides (these elements hardcode white) */
+html[data-theme="azorius"] .inner-dark__sub,
+html[data-theme="azorius"] .inner-dark__eyebrow,
+html[data-theme="azorius"] .hp-hero__subtitle,
+html[data-theme="azorius"] .hp-hero__title,
+html[data-theme="azorius"] .hp-stat__number,
+html[data-theme="azorius"] .hp-card__sub,
+html[data-theme="azorius"] .hp-card__meta,
+html[data-theme="azorius"] .hp-standings__name,
+html[data-theme="azorius"] .hp-tcard__name,
+html[data-theme="azorius"] .hp-countdown__val,
+html[data-theme="azorius"] .hp-cta-box__sub,
+html[data-theme="azorius"] .deck-card__player,
+html[data-theme="azorius"] .reg-subtitle,
+html[data-theme="azorius"] .profile-email {
+  color: #1a2e5c;
+}
+
+/* Gold buttons — dark text for AA on gold bg */
+html[data-theme="azorius"] .btn-primary {
+  background-color: #e8a520;
+  border-color: #8a5c04;
+  color: #1a0e02;
+}
+html[data-theme="azorius"] .btn-primary:hover {
+  background-color: #f5c842;
+  border-color: #c9940f;
+  color: #1a0e02;
+  box-shadow: 0 4px 14px rgba(232, 165, 32, 0.45);
+  transform: translateY(-1px);
+}
+
+html[data-theme="azorius"] .btn-secondary {
+  border-color: #8a5c04;
+  color: #8a5c04;
+}
+html[data-theme="azorius"] .btn-secondary:hover {
+  background-color: rgba(232, 165, 32, 0.12);
+}
+
+html[data-theme="azorius"] .btn-gold:hover {
+  background-color: #f5c842;
+  border-color: #c9940f;
+  color: #1a0e02;
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-theme="azorius"] .hp-card__viewall:hover {
+  color: #1a2e5c;
+}
+
+html[data-theme="azorius"] .lega-tappa-row a {
+  color: #1a4fa8;
+}
+html[data-theme="azorius"] .lega-tappa-row a:hover {
+  color: #1a2e5c;
+}
+
+html[data-theme="azorius"] .hp-stat__number--gold,
+html[data-theme="azorius"] .hp-tcard__name {
+  color: #c9940f;
+}
+
+/* Match hp-hero__title color (#1a2e5c) on labels, badge, outline btn */
+html[data-theme="azorius"] .hp-season-badge,
+html[data-theme="azorius"] .hp-section-label,
+html[data-theme="azorius"] .hp-card__eyebrow,
+html[data-theme="azorius"] .hp-btn-outline {
+  color: #1a2e5c;
+}
+html[data-theme="azorius"] .hp-btn-outline {
+  border-color: #1a2e5c;
+}
+html[data-theme="azorius"] .hp-btn-outline:hover {
+  background-color: rgba(26, 46, 92, 0.08);
+  color: #1a2e5c;
+  border-color: #1a2e5c;
+}
+
+/* ════════════════════════════════════════════════════
+   BOROS · Warm Red × Ivory
+   ════════════════════════════════════════════════════ */
+
+html[data-theme="boros"] body {
+  background: linear-gradient(160deg, #7a1515 0%, #c44a2a 45%, #a05020 100%);
+}
+
+/* White headings on warm dark gradient */
+html[data-theme="boros"] h1,
+html[data-theme="boros"] h2,
+html[data-theme="boros"] h3,
+html[data-theme="boros"] h4,
+html[data-theme="boros"] .inner-dark__title,
+html[data-theme="boros"] .hp-card__title,
+html[data-theme="boros"] .lega-card__title,
+html[data-theme="boros"] .hp-cta-box__title,
+html[data-theme="boros"] .reg-title,
+html[data-theme="boros"] .reg-success__title,
+html[data-theme="boros"] .profile-name,
+html[data-theme="boros"] .profile-section-title {
+  color: #ffffff;
+}
+
+/* White bg buttons, ivory border, dark red text */
+html[data-theme="boros"] .btn-primary {
+  background-color: #ffffff;
+  border-color: #f0e0c0;
+  color: #5a1a0a;
+}
+html[data-theme="boros"] .btn-primary:hover {
+  background-color: #fdf5e6;
+  border-color: #e8d5b4;
+  color: #5a1a0a;
+  box-shadow: 0 4px 14px rgba(245, 234, 216, 0.55);
+  transform: translateY(-1px);
+}
+
+html[data-theme="boros"] .btn-secondary {
+  border-color: #f0e0c0;
+  color: #ffffff;
+}
+html[data-theme="boros"] .btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="boros"] .form-input:focus,
+html[data-theme="boros"] .form-select:focus {
+  border-color: #e05050;
+  box-shadow: 0 0 0 3px rgba(224, 80, 80, 0.2);
+}
+
+/* Iscriviti alla community: white bg, ivory on hover */
+html[data-theme="boros"] .btn-gold {
+  background-color: #ffffff;
+  border-color: #f0e0c0;
+  color: #5a1a0a;
+}
+html[data-theme="boros"] .btn-gold:hover {
+  background-color: #fdf5e6;
+  border-color: #e8d5b4;
+  color: #5a1a0a;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Ivory labels */
+html[data-theme="boros"] .hp-stat__label,
+html[data-theme="boros"] .hp-card__eyebrow,
+html[data-theme="boros"] .hp-section-label {
+  color: #fdf5e6;
+}
+
+html[data-theme="boros"] .brand-name,
+html[data-theme="boros"] .hp-season-badge {
+  color: #ffffff;
+}
+
+html[data-theme="boros"] .hp-stat__number--gold {
+  color: #fdf5e6;
+}
+
+html[data-theme="boros"] .hp-card__viewall {
+  color: #fdf5e6;
+}
+html[data-theme="boros"] .hp-card__viewall:hover {
+  color: #ffffff;
+}
+
+html[data-theme="boros"] .inner-section-header__label,
+html[data-theme="boros"] .standings-table__th,
+html[data-theme="boros"] .standings-table__td,
+html[data-theme="boros"] .standings-table__td--pos,
+html[data-theme="boros"] .standings-table__td--num,
+html[data-theme="boros"] .inner-dark__sub {
+  color: #fff;
+}
+
+html[data-theme="azorius"] .inner-section-header__label,
+html[data-theme="azorius"] .standings-table__th,
+html[data-theme="azorius"] .standings-table__td,
+html[data-theme="azorius"] .standings-table__td--pos,
+html[data-theme="azorius"] .standings-table__td--num {
+  color: #1a4fa8;
+}
+
+html[data-theme="azorius"] .standings-table__row:hover .standings-table__td,
+html[data-theme="azorius"] .standings-table__row:hover .standings-table__td--pos,
+html[data-theme="azorius"] .standings-table__row:hover .standings-table__td--num {
+  color: #ffffff;
+}
+
+html[data-theme="boros"] .hp-season-badge {
+  border-color: #ffffff;
+}
+
+html[data-theme="boros"] .hp-hero__subtitle {
+  color: #ffffff;
+}
+
+/* ════════════════════════════════════════════════════
+   GRUUL · Red × Green
+   ════════════════════════════════════════════════════ */
+
+html[data-theme="gruul"] body {
+  background: linear-gradient(160deg, #6e1208 0%, #c43818 38%, #1e5c28 100%);
+}
+
+/* Light green buttons, dark green border */
+html[data-theme="gruul"] .btn-primary {
+  background-color: #6ab86e;
+  border-color: #1f6128;
+  color: #071510;
+}
+html[data-theme="gruul"] .btn-primary:hover {
+  background-color: #82cc86;
+  border-color: #2d7d35;
+  color: #071510;
+  box-shadow: 0 4px 14px rgba(45, 125, 53, 0.45);
+  transform: translateY(-1px);
+}
+
+html[data-theme="gruul"] .btn-secondary {
+  border-color: #2d7d35;
+  color: #8fd49a;
+}
+html[data-theme="gruul"] .btn-secondary:hover {
+  background-color: rgba(45, 125, 53, 0.15);
+}
+
+html[data-theme="gruul"] .btn-gold {
+  background-color: #6ab86e;
+  border-color: #1f6128;
+  color: #071510;
+}
+html[data-theme="gruul"] .btn-gold:hover {
+  background-color: #82cc86;
+  border-color: #82cc86;
+  color: #071510;
+  box-shadow: none;
+  transform: none;
+}
+
+html[data-theme="gruul"] .hp-stat__number--gold {
+  color: #6ab86e;
+}
+
+html[data-theme="gruul"] .standings-table__th,
+html[data-theme="gruul"] .standings-table__td,
+html[data-theme="gruul"] .standings-table__td--pos,
+html[data-theme="gruul"] .standings-table__td--num {
+  color: #ffffff;
+}
+
+/* ════════════════════════════════════════════════════
+   SIMIC · Blue × Green  (WCAG AA, modern touch)
+   ════════════════════════════════════════════════════ */
+
+html[data-theme="simic"] body {
+  background: linear-gradient(160deg, #083550 0%, #0b7c63 50%, #1a5c3a 100%);
+}
+
+/* Teal headings matching button background */
+html[data-theme="simic"] h1,
+html[data-theme="simic"] h2,
+html[data-theme="simic"] h3,
+html[data-theme="simic"] h4,
+html[data-theme="simic"] .inner-dark__title,
+html[data-theme="simic"] .hp-card__title,
+html[data-theme="simic"] .lega-card__title,
+html[data-theme="simic"] .hp-cta-box__title,
+html[data-theme="simic"] .reg-title,
+html[data-theme="simic"] .reg-success__title,
+html[data-theme="simic"] .profile-name,
+html[data-theme="simic"] .profile-section-title {
+  color: #3ec9b2;
+}
+
+/* Teal buttons, dark teal border — 8.2:1 on teal bg ✓ */
+html[data-theme="simic"] .btn-primary {
+  background-color: #3ec9b2;
+  border-color: #076550;
+  color: #041a15;
+}
+html[data-theme="simic"] .btn-primary:hover {
+  background-color: #5edccb;
+  border-color: #0b7c63;
+  color: #041a15;
+  box-shadow: 0 4px 14px rgba(62, 201, 178, 0.4);
+  transform: translateY(-1px);
+}
+
+html[data-theme="simic"] .btn-secondary {
+  border-color: #3ec9b2;
+  color: #3ec9b2;
+}
+html[data-theme="simic"] .btn-secondary:hover {
+  background-color: rgba(62, 201, 178, 0.12);
+}
+
+html[data-theme="simic"] .inner-section-header__label,
+html[data-theme="simic"] .hp-section-label,
+html[data-theme="simic"] .hp-card__eyebrow,
+html[data-theme="simic"] .hp-card__viewall,
+html[data-theme="simic"] .hp-season-badge {
+  color: #3ec9b2;
+}
+
+html[data-theme="simic"] .standings-table__th,
+html[data-theme="simic"] .standings-table__td,
+html[data-theme="simic"] .standings-table__td--pos,
+html[data-theme="simic"] .standings-table__td--num {
+  color: #ffffff;
+}
+
+html[data-theme="simic"] .hp-season-badge {
+  border-color: #3ec9b2;
+}
+
+html[data-theme="simic"] .hp-stat__number--gold {
+  color: #0e2320;
+}
+
+html[data-theme="simic"] .btn-gold {
+  background-color: #3ec9b2;
+  border-color: #076550;
+  color: #041a15;
+}
+html[data-theme="simic"] .btn-gold:hover {
+  background-color: #6ee8d8;
+  border-color: #3ec9b2;
+  color: #041a15;
+  box-shadow: 0 4px 14px rgba(62, 201, 178, 0.4);
+  transform: translateY(-1px);
+}
+
+html[data-theme="simic"] .hp-card__viewall:hover {
+  color: #5edccb;
+}
+
+/* ════════════════════════════════════════════════════
+   GOLGARI · Black × Green
+   ════════════════════════════════════════════════════ */
+
+html[data-theme="golgari"] body {
+  background: linear-gradient(160deg, #05080a 0%, #0a180d 40%, #1a3d1a 100%);
+}
+
+/* Green headings */
+html[data-theme="golgari"] h1,
+html[data-theme="golgari"] h2,
+html[data-theme="golgari"] h3,
+html[data-theme="golgari"] h4,
+html[data-theme="golgari"] .inner-dark__title,
+html[data-theme="golgari"] .hp-card__title,
+html[data-theme="golgari"] .lega-card__title,
+html[data-theme="golgari"] .hp-cta-box__title,
+html[data-theme="golgari"] .reg-title,
+html[data-theme="golgari"] .reg-success__title,
+html[data-theme="golgari"] .profile-name,
+html[data-theme="golgari"] .profile-section-title {
+  color: #4db34d;
+}
+
+/* Green bg buttons, dark green border */
+html[data-theme="golgari"] .btn-primary {
+  background-color: #2d6a2d;
+  border-color: #1a4a1a;
+  color: #ffffff;
+}
+html[data-theme="golgari"] .btn-primary:hover {
+  background-color: #3d8a3d;
+  border-color: #2d6a2d;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(45, 106, 45, 0.45);
+  transform: translateY(-1px);
+}
+
+html[data-theme="golgari"] .btn-secondary {
+  border-color: #2d6a2d;
+  color: #4db34d;
+}
+html[data-theme="golgari"] .btn-secondary:hover {
+  background-color: rgba(45, 106, 45, 0.15);
+}
+
+html[data-theme="golgari"] .hp-season-badge {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+html[data-theme="golgari"] .btn-gold {
+  background-color: #2d6a2d;
+  border-color: #1a4a1a;
+  color: #ffffff;
+}
+html[data-theme="golgari"] .btn-gold:hover {
+  background-color: #4db34d;
+  border-color: #3d8a3d;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(45, 106, 45, 0.5);
+  transform: translateY(-1px);
+}
+
+html[data-theme="golgari"] .hp-card__eyebrow,
+html[data-theme="golgari"] .hp-section-label,
+html[data-theme="golgari"] .inner-section-header__label,
+html[data-theme="golgari"] .hp-card__viewall {
+  color: #ffffff;
+}
+
+html[data-theme="golgari"] .hp-card__viewall:hover {
+  color: #4db34d;
+}
+
+html[data-theme="golgari"] .standings-table__th,
+html[data-theme="golgari"] .standings-table__td,
+html[data-theme="golgari"] .standings-table__td--pos,
+html[data-theme="golgari"] .standings-table__td--num {
+  color: #ffffff;
+}
+
+html[data-theme="golgari"] .hp-card__viewall:hover {
+  color: #3d8a3d;
 }

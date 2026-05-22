@@ -139,9 +139,6 @@ class SingleTappa extends Composer
                 'nome'      => $row['nome'] ?? '',
                 'punti'     => $row['punti'] ?? '',
                 'vsp'       => "{$v}-{$s}-{$p}",
-                'via'       => isset($row['via'])  ? number_format((float) $row['via'],  2) : '',
-                'vp'        => isset($row['vp'])   ? number_format((float) $row['vp'],   2) : '',
-                'vpa'       => isset($row['vpa'])  ? number_format((float) $row['vpa'],  2) : '',
             ];
         }, $rows, array_keys($rows)));
     }

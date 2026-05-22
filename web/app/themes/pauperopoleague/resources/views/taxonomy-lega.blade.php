@@ -36,9 +36,6 @@
                     <th class="standings-table__th standings-table__th--num">Punti</th>
                     <th class="standings-table__th standings-table__th--num">V/S/P</th>
                     <th class="standings-table__th standings-table__th--num">Tappe</th>
-                    <th class="standings-table__th standings-table__th--num">%VIA</th>
-                    <th class="standings-table__th standings-table__th--num">%VP</th>
-                    <th class="standings-table__th standings-table__th--num">%VPA</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -57,9 +54,6 @@
                       <td class="standings-table__td standings-table__td--num">{{ $player['punti'] }}</td>
                       <td class="standings-table__td standings-table__td--num">{{ $player['vsp'] }}</td>
                       <td class="standings-table__td standings-table__td--num">{{ $player['tappe'] }}</td>
-                      <td class="standings-table__td standings-table__td--num">{{ $player['via'] }}</td>
-                      <td class="standings-table__td standings-table__td--num">{{ $player['vp'] }}</td>
-                      <td class="standings-table__td standings-table__td--num">{{ $player['vpa'] }}</td>
                     </tr>
                   @endforeach
                 </tbody>

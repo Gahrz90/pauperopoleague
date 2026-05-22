@@ -6,6 +6,16 @@
 
 defined('ABSPATH') || exit;
 
+add_action('init', function () {
+    if (!empty($_GET['paupero_logout']) && is_user_logged_in()) {
+        if (wp_verify_nonce($_GET['_wpnonce'] ?? '', 'paupero_logout')) {
+            wp_logout();
+        }
+        wp_safe_redirect(home_url('/'));
+        exit;
+    }
+});
+
 add_action('rest_api_init', function () {
     register_rest_route('paupero/v1', '/register', [
         'methods'             => 'POST',

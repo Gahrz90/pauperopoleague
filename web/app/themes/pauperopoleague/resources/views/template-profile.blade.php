@@ -177,7 +177,7 @@
         <hr class="profile-divider">
 
         <div class="profile-logout">
-          <a href="{{ wp_logout_url(add_query_arg('login_status', 'logged_out', get_permalink(get_page_by_path('login')) ?: home_url('/'))) }}"
+          <a href="{{ home_url('/') . '?paupero_logout=1&_wpnonce=' . wp_create_nonce('paupero_logout') }}"
              class="btn btn-danger btn-sm">
             Esci dall'account
           </a>

@@ -24,7 +24,7 @@
            class="user-avatar" aria-label="Il tuo profilo">
           {{ strtoupper(substr($currentUser->first_name ?: $currentUser->display_name, 0, 1)) }}
         </a>
-        <a href="{{ wp_logout_url(add_query_arg('login_status', 'logged_out', get_permalink(get_page_by_path('login')) ?: home_url('/'))) }}" class="btn btn-gold btn-sm">Esci</a>
+        <a href="{{ home_url('/') . '?paupero_logout=1&_wpnonce=' . wp_create_nonce('paupero_logout') }}" class="btn btn-gold btn-sm">Esci</a>
       @else
         <a href="{{ get_permalink(get_page_by_path('login')) ?: wp_login_url() }}" class="btn btn-secondary btn-sm">Accedi</a>
         <a href="{{ get_permalink(get_page_by_path('registrazione')) ?: home_url('/registrazione/') }}" class="btn btn-gold btn-sm">Iscriviti</a>
@@ -64,7 +64,7 @@
           </a>
           <span style="font-size:0.875rem;color:var(--color-neutral-300);font-weight:500;">{{ $currentUser->display_name }}</span>
         </div>
-        <a href="{{ wp_logout_url(add_query_arg('login_status', 'logged_out', get_permalink(get_page_by_path('login')) ?: home_url('/'))) }}" class="btn btn-gold btn-sm" style="justify-content:center;">Esci</a>
+        <a href="{{ home_url('/') . '?paupero_logout=1&_wpnonce=' . wp_create_nonce('paupero_logout') }}" class="btn btn-gold btn-sm" style="justify-content:center;">Esci</a>
       @else
         <a href="{{ get_permalink(get_page_by_path('login')) ?: wp_login_url() }}" class="btn btn-secondary btn-sm" style="justify-content:center;">Accedi</a>
         <a href="{{ get_permalink(get_page_by_path('registrazione')) ?: home_url('/registrazione/') }}" class="btn btn-gold btn-sm" style="justify-content:center;">Iscriviti</a>

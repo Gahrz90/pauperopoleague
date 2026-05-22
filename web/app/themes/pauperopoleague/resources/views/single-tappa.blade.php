@@ -74,9 +74,6 @@
                     <th class="standings-table__th standings-table__th--nome">Giocatore</th>
                     <th class="standings-table__th standings-table__th--num">Punti</th>
                     <th class="standings-table__th standings-table__th--num">V/S/P</th>
-                    <th class="standings-table__th standings-table__th--num">%VIA</th>
-                    <th class="standings-table__th standings-table__th--num">%VP</th>
-                    <th class="standings-table__th standings-table__th--num">%VPA</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -94,9 +91,6 @@
                       </td>
                       <td class="standings-table__td standings-table__td--num">{{ $row['punti'] }}</td>
                       <td class="standings-table__td standings-table__td--num">{{ $row['vsp'] }}</td>
-                      <td class="standings-table__td standings-table__td--num">{{ $row['via'] }}</td>
-                      <td class="standings-table__td standings-table__td--num">{{ $row['vp'] }}</td>
-                      <td class="standings-table__td standings-table__td--num">{{ $row['vpa'] }}</td>
                     </tr>
                   @endforeach
                 </tbody>

@@ -2222,6 +2222,10 @@ html[data-theme="boros"] .inner-dark__sub {
   color: #fff;
 }
 
+html[data-theme="azorius"] .form-label {
+  color: #1a2e5c;
+}
+
 html[data-theme="azorius"] .inner-section-header__label,
 html[data-theme="azorius"] .standings-table__th,
 html[data-theme="azorius"] .standings-table__td,

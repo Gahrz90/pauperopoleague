@@ -69,9 +69,6 @@ class TaxonomyLega extends Composer
                         'v'       => 0,
                         's'       => 0,
                         'p'       => 0,
-                        'via_sum' => 0.0,
-                        'vp_sum'  => 0.0,
-                        'vpa_sum' => 0.0,
                         'tappe'   => 0,
                     ];
                 }
@@ -80,9 +77,6 @@ class TaxonomyLega extends Composer
                 $players[$nome]['v']        += (int)   ($row['vittorie']  ?? 0);
                 $players[$nome]['s']        += (int)   ($row['sconfitte'] ?? 0);
                 $players[$nome]['p']        += (int)   ($row['pareggi']   ?? 0);
-                $players[$nome]['via_sum']  += (float) ($row['via']       ?? 0);
-                $players[$nome]['vp_sum']   += (float) ($row['vp']        ?? 0);
-                $players[$nome]['vpa_sum']  += (float) ($row['vpa']       ?? 0);
                 $players[$nome]['tappe']    += 1;
             }
         }
@@ -99,9 +93,6 @@ class TaxonomyLega extends Composer
                 'nome'      => $nome,
                 'punti'     => $data['punti'],
                 'vsp'       => "{$data['v']}-{$data['s']}-{$data['p']}",
-                'via'       => $n > 0 ? number_format($data['via_sum'] / $n, 2) : '',
-                'vp'        => $n > 0 ? number_format($data['vp_sum']  / $n, 2) : '',
-                'vpa'       => $n > 0 ? number_format($data['vpa_sum'] / $n, 2) : '',
                 'tappe'     => $n,
             ];
         }

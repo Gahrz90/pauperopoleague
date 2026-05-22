@@ -26,8 +26,7 @@
         {{-- Status messages from email verification redirect --}}
         @if ($reg_status === 'verified')
           <div class="alert alert-success reg-alert" role="alert">
-            <strong>Email confermata!</strong> Il tuo account è attivo. Puoi ora
-            <a href="{{ wp_login_url() }}">effettuare il login</a>.
+            <strong>Email confermata!</strong> Il tuo account è attivo. Puoi ora effettuare il login
           </div>
         @elseif ($reg_status === 'token_expired')
           <div class="alert alert-error reg-alert" role="alert">

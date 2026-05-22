@@ -277,7 +277,7 @@ function paupero_register_user(WP_REST_Request $request): WP_REST_Response|WP_Er
         'user_pass'   => $password,
         'first_name'  => $nome,
         'last_name'   => $cognome,
-        'role'        => '', // no role until email verified
+        'role'        => 'subscriber',
         'description' => $bio ?? '',
     ]);
 

@@ -41,8 +41,8 @@
           <span class="hp-stat__label">GIOCATORI MEDI A TAPPA</span>
         </div>
         <div class="hp-stat">
-          <span class="hp-stat__number hp-stat__number--gold">€4.2k</span>
-          <span class="hp-stat__label">PREMI ASSEGNATI</span>
+          <span class="hp-stat__number hp-stat__number--gold">41</span>
+          <span class="hp-stat__label">GIOCATORI IN UNA SINGOLA TAPPA</span>
         </div>
       </div>
     </div>

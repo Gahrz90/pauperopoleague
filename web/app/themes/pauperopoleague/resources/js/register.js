@@ -35,6 +35,12 @@ function validate(data) {
   if (!data.nome.trim())    errors.nome    = 'Il nome è obbligatorio.';
   if (!data.cognome.trim()) errors.cognome = 'Il cognome è obbligatorio.';
 
+  if (!data.nome_utente.trim()) {
+    errors.nome_utente = 'Il nome utente è obbligatorio.';
+  } else if (!/^[a-zA-Z0-9_.-]+$/.test(data.nome_utente.trim())) {
+    errors.nome_utente = 'Solo lettere, numeri, punti, trattini e underscore.';
+  }
+
   if (!data.email.trim()) {
     errors.email = "L'email è obbligatoria.";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
@@ -83,6 +89,7 @@ form.addEventListener('submit', async (e) => {
         nome:             data.nome,
         cognome:          data.cognome,
         email:            data.email,
+        nome_utente:      data.nome_utente,
         password:         data.password,
         confirm_password: data.confirm_password,
         data_nascita:     data.data_nascita     || '',
@@ -101,6 +108,8 @@ form.addEventListener('submit', async (e) => {
         setFieldError('confirm_password', json.message);
       } else if (code === 'email_exists') {
         setFieldError('email', json.message);
+      } else if (code === 'username_exists') {
+        setFieldError('nome_utente', json.message);
       } else {
         errorEl.textContent = json.message || 'Si è verificato un errore. Riprova.';
         errorEl.hidden = false;

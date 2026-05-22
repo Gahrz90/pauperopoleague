@@ -82,15 +82,28 @@
             </div>
           </div>
 
-          <div class="reg-form__group">
-            <label class="form-label" for="reg-email">
-              Email <span class="reg-required" aria-hidden="true">*</span>
-            </label>
-            <input
-              type="email" id="reg-email" name="email"
-              class="form-input" autocomplete="email" required
-            >
-            <span class="form-error-msg" data-for="email"></span>
+          <div class="reg-form__row">
+            <div class="reg-form__group">
+              <label class="form-label" for="reg-email">
+                Email <span class="reg-required" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="email" id="reg-email" name="email"
+                class="form-input" autocomplete="email" required
+              >
+              <span class="form-error-msg" data-for="email"></span>
+            </div>
+
+            <div class="reg-form__group">
+              <label class="form-label" for="reg-nome-utente">
+                Nome utente <span class="reg-required" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text" id="reg-nome-utente" name="nome_utente"
+                class="form-input" autocomplete="username" required
+              >
+              <span class="form-error-msg" data-for="nome_utente"></span>
+            </div>
           </div>
 
           <div class="reg-form__row">

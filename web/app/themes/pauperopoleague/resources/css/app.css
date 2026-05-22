@@ -2473,3 +2473,7 @@ html[data-theme="golgari"] .standings-table__td--num {
 html[data-theme="golgari"] .hp-card__viewall:hover {
   color: #3d8a3d;
 }
+
+[data-card] {
+  cursor: default;
+}

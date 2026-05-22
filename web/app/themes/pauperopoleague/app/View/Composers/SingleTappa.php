@@ -89,6 +89,8 @@ class SingleTappa extends Composer
         return $stats;
     }
 
+    private const BASIC_LANDS = ['Mountain', 'Plain', 'Plains', 'Island', 'Swamp', 'Forest'];
+
     public function card_stats(): array
     {
         $mazzi = get_field('mazzi');
@@ -104,6 +106,7 @@ class SingleTappa extends Composer
                 if ($in_side || $line === '') continue;
                 if (preg_match('/^(\d+)\s+(.+)$/', $line, $match)) {
                     $card = trim($match[2]);
+                    if (in_array($card, self::BASIC_LANDS, true)) continue;
                     $counts[$card] = ($counts[$card] ?? 0) + (int) $match[1];
                 }
             }

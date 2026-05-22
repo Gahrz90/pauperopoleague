@@ -1,4 +1,5 @@
 import './header/toggle-menu';
+import './card-tooltip';
 
 import.meta.glob([
   '../images/**',

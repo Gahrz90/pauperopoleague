@@ -35,6 +35,10 @@ add_action('rest_api_init', function () {
                 'validate_callback' => fn($v) => is_email($v),
                 'sanitize_callback' => 'sanitize_email',
             ],
+            'nome_utente' => [
+                'required'          => true,
+                'sanitize_callback' => fn($v) => sanitize_user($v, true),
+            ],
             'password' => [
                 'required' => true,
             ],
@@ -241,6 +245,7 @@ function paupero_register_user(WP_REST_Request $request): WP_REST_Response|WP_Er
     $nome             = $request->get_param('nome');
     $cognome          = $request->get_param('cognome');
     $email            = $request->get_param('email');
+    $nome_utente      = $request->get_param('nome_utente');
     $password         = $request->get_param('password');
     $confirm_password = $request->get_param('confirm_password');
     $data_nascita     = $request->get_param('data_nascita');
@@ -266,17 +271,17 @@ function paupero_register_user(WP_REST_Request $request): WP_REST_Response|WP_Er
         return paupero_resend_verification($existing_user->ID, $nome, $email);
     }
 
-    $username = sanitize_user(strstr($email, '@', true), true);
-    if (username_exists($username)) {
-        $username = $username . '_' . wp_generate_password(4, false);
+    if (username_exists($nome_utente)) {
+        return new WP_Error('username_exists', 'Questo nome utente è già in uso.', ['status' => 409]);
     }
 
     $user_id = wp_insert_user([
-        'user_login'  => $username,
+        'user_login'  => $nome_utente,
         'user_email'  => $email,
         'user_pass'   => $password,
         'first_name'  => $nome,
         'last_name'   => $cognome,
+        'nickname'    => $nome_utente,
         'role'        => 'subscriber',
         'description' => $bio ?? '',
     ]);

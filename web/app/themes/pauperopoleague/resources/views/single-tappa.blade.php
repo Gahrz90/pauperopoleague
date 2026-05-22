@@ -171,7 +171,7 @@
                   <p class="metagame-panel__title">Carte più giocate</p>
                   @foreach($card_stats as $name => $avg)
                     <div class="meta-bar">
-                      <span class="meta-bar__label" title="{{ $name }}" data-card="{{ $name }}">{{ $name }}</span>
+                      <span class="meta-bar__label" title="{{ $name }}">{{ $name }}</span>
                       <div class="meta-bar__track">
                         <div class="meta-bar__fill" style="width:{{ round($avg / $max_avg * 100) }}%"></div>
                       </div>

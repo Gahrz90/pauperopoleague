@@ -11,7 +11,7 @@ class FrontPage extends Composer
     public function with(): array
     {
         return [
-            'legheCount'         => $this->legheCount(),
+            'tappeCount'         => $this->tappeCount(),
             'giocatoriCount'     => $this->giocatoriCount(),
             'giocatoriMedi'      => $this->giocatoriMediATappa(),
             'prossimaTappa'      => $this->prossimaTappa(),
@@ -50,18 +50,9 @@ class FrontPage extends Composer
         return (int) round($totale / \count($tappe));
     }
 
-    public function legheCount(): int
+    public function tappeCount(): int
     {
-        $terms = get_terms([
-            'taxonomy'   => 'lega',
-            'hide_empty' => true,
-        ]);
-
-        if (is_wp_error($terms)) {
-            return 0;
-        }
-
-        return \count($terms);
+        return (int) wp_count_posts('tappa')->publish;
     }
 
     public function prossimaTappa(): ?array

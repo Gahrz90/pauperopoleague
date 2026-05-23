@@ -33,8 +33,8 @@
           <span class="hp-stat__label">GIOCATORI</span>
         </div>
         <div class="hp-stat">
-          <span class="hp-stat__number">{{ $legheCount }}</span>
-          <span class="hp-stat__label">LEGHE ORGANIZZATE</span>
+          <span class="hp-stat__number">{{ $tappeCount }}</span>
+          <span class="hp-stat__label">TAPPE ORGANIZZATE</span>
         </div>
         <div class="hp-stat">
           <span class="hp-stat__number">{{ $giocatoriMedi }}</span>

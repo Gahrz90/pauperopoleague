@@ -661,6 +661,18 @@ footer.content-info {
   font-size: 0.75rem;
 }
 
+.site-footer-credits {
+  margin-top: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  color: var(--color-neutral-500);
+  line-height: 1.6;
+}
+
+.site-footer-credits p {
+  margin: 0;
+}
+
 /* ── Hero ──────────────────────────────────────────── */
 
 .hp-hero {

@@ -17,7 +17,7 @@
             @if($lega_name)
               <p class="inner-dark__eyebrow">
                 @if($lega_url)
-                  <a href="{{ $lega_url }}" style="color:inherit;text-decoration:none;transition:color 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">{{ $lega_name }}</a>
+                  <a href="{{ $lega_url }}" class="eyebrow-link">{{ $lega_name }}</a>
                 @else
                   {{ $lega_name }}
                 @endif
@@ -49,7 +49,7 @@
       {{-- Optional WordPress content --}}
       @php $content = get_the_content(); @endphp
       @if($content)
-        <div style="color:var(--color-neutral-300);font-size:0.9375rem;line-height:1.7;margin-bottom:2.5rem;max-width:640px;">
+        <div class="inner-dark__sub" style="font-size:0.9375rem;line-height:1.7;margin-bottom:2.5rem;max-width:640px;">
           {!! apply_filters('the_content', $content) !!}
         </div>
       @endif
@@ -192,7 +192,7 @@
 
         {{-- ── Decklist submission form ────────────────────── --}}
         <section
-          class="decklist-form-wrap"
+          class="decklist-form-wrap reg-form"
           id="decklist-app"
           data-tappa-id="{{ $tappa_id }}"
           data-rest-url="{{ rest_url('paupero/v1/decklist') }}"
@@ -211,7 +211,7 @@
             </p>
 
             <div class="reg-form__group">
-              <label class="form-label" for="codice-tappa" style="color:#fff;">Codice Tappa</label>
+              <label class="form-label" for="codice-tappa">Codice Tappa</label>
               <input
                 type="text" id="codice-tappa"
                 class="form-input" placeholder="Es. TAPPA2024A"
@@ -234,14 +234,14 @@
 
             <div class="reg-form__row">
               <div class="reg-form__group">
-                <label class="form-label" for="nome-giocatore" style="color:#fff;">
+                <label class="form-label" for="nome-giocatore">
                   Nome Giocatore <span class="reg-required">*</span>
                 </label>
                 <input type="text" id="nome-giocatore" class="form-input" placeholder="Il tuo nome">
               </div>
 
               <div class="reg-form__group">
-                <label class="form-label" for="titolo-mazzo" style="color:#fff;">
+                <label class="form-label" for="titolo-mazzo">
                   Nome Mazzo <span class="reg-required">*</span>
                 </label>
                 <input type="text" id="titolo-mazzo" class="form-input" placeholder="Es. Il mio Mono Red">
@@ -249,7 +249,7 @@
             </div>
 
             <div class="reg-form__group">
-              <label class="form-label" for="archetipo" style="color:#fff;">
+              <label class="form-label" for="archetipo">
                 Archetipo <span class="reg-required">*</span>
               </label>
               <select id="archetipo" class="form-select" disabled>

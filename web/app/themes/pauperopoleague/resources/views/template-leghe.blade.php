@@ -61,7 +61,7 @@
                     $dt           = $data_raw
                                     ? \DateTime::createFromFormat('Y-m-d H:i:s', $data_raw, wp_timezone())
                                     : null;
-                    $n_giocatori  = $conclusa ? count(get_field('mazzi', $tappa->ID) ?: []) : null;
+                    $n_giocatori  = $conclusa ? ((int) get_field('numero_partecipanti', $tappa->ID) ?: null) : null;
                   @endphp
                   <li class="lega-tappa-row">
                     <a href="{{ get_permalink($tappa->ID) }}">{{ get_the_title($tappa->ID) }}</a>

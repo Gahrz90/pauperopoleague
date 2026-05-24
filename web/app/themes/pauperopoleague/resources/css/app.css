@@ -657,7 +657,7 @@ footer.content-info {
   border-top: 1px solid var(--color-neutral-700);
   padding: 1.5rem 0;
   text-align: center;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
   font-size: 0.75rem;
 }
 
@@ -665,7 +665,7 @@ footer.content-info {
   margin-top: 0.75rem;
   font-family: var(--font-sans);
   font-size: 0.6875rem;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
   line-height: 1.6;
 }
 
@@ -884,7 +884,7 @@ footer.content-info {
   font-size: 0.5rem;
   font-weight: 600;
   letter-spacing: 0.1em;
-  color: var(--color-neutral-400);
+  color: var(--color-neutral-300);
   text-transform: uppercase;
 }
 
@@ -909,7 +909,7 @@ footer.content-info {
   font-family: var(--font-display);
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
   width: 1.25rem;
   text-align: center;
   flex-shrink: 0;
@@ -1271,7 +1271,7 @@ footer.content-info {
 
 .reg-success__hint {
   font-size: 0.8125rem;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
 }
 
 /* ════════════════════════════════════════════════════
@@ -1315,6 +1315,14 @@ footer.content-info {
   margin: 0;
   line-height: 1.6;
 }
+
+.inner-dark__eyebrow a.eyebrow-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.inner-dark__eyebrow a.eyebrow-link:hover { color: #ffffff; }
+html[data-theme="azorius"] .inner-dark__eyebrow a.eyebrow-link:hover { color: var(--color-primary); }
 
 .inner-section-header {
   display: flex;
@@ -1396,7 +1404,7 @@ footer.content-info {
 
 .lega-tappa-row__date {
   font-size: 0.6875rem;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
 }
 
 /* ════════════════════════════════════════════════════
@@ -1449,13 +1457,13 @@ footer.content-info {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
   white-space: nowrap;
 }
 
 .deck-card__name {
   font-size: 0.6875rem;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
   grid-column: 1;
 }
 
@@ -1472,7 +1480,7 @@ footer.content-info {
 .deck-card__qty {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
   width: 1.25rem;
   text-align: right;
   flex-shrink: 0;
@@ -1490,7 +1498,7 @@ footer.content-info {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
   padding-top: 0.625rem;
   padding-bottom: 0.25rem;
   margin-bottom: 0.125rem;
@@ -1850,7 +1858,7 @@ footer.content-info {
   font-family: var(--font-mono);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
   border-bottom: 1px solid var(--color-neutral-700);
   white-space: nowrap;
 }
@@ -1892,7 +1900,7 @@ footer.content-info {
 .standings-table__td--pos {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
 }
 
 .standings-table__td--num {
@@ -2041,7 +2049,7 @@ html[data-theme="azorius"] .hp-countdown__item {
   color: #1a2e5c;
 }
 
-/* Gold headings */
+/* Gold headings — #7a4d00 (gold-700) gives 7.27:1 on white, passing all WCAG AA thresholds */
 html[data-theme="azorius"] h1,
 html[data-theme="azorius"] h2,
 html[data-theme="azorius"] h3,
@@ -2054,7 +2062,7 @@ html[data-theme="azorius"] .reg-title,
 html[data-theme="azorius"] .reg-success__title,
 html[data-theme="azorius"] .profile-section-title,
 html[data-theme="azorius"] .profile-name {
-  color: #c9940f;
+  color: var(--color-gold-700);
 }
 
 /* Dark body text overrides (these elements hardcode white) */
@@ -2118,7 +2126,7 @@ html[data-theme="azorius"] .lega-tappa-row a:hover {
 
 html[data-theme="azorius"] .hp-stat__number--gold,
 html[data-theme="azorius"] .hp-tcard__name {
-  color: #c9940f;
+  color: var(--color-gold-700);
 }
 
 /* Match hp-hero__title color (#1a2e5c) on labels, badge, outline btn */
@@ -2207,7 +2215,7 @@ html[data-theme="boros"] .btn-gold:hover {
 html[data-theme="boros"] .hp-stat__label,
 html[data-theme="boros"] .hp-card__eyebrow,
 html[data-theme="boros"] .hp-section-label {
-  color: #fdf5e6;
+  color: #ffffff;
 }
 
 html[data-theme="boros"] .brand-name,
@@ -2261,6 +2269,10 @@ html[data-theme="boros"] .hp-hero__subtitle {
   color: #ffffff;
 }
 
+/* Primary (#cc3333) is dark red — nearly invisible on red gradient bg (2.1:1). Use white for links. */
+html[data-theme="boros"] a { color: #ffffff; }
+html[data-theme="boros"] a:hover { color: #fdf5e6; }
+
 /* ════════════════════════════════════════════════════
    GRUUL · Red × Green
    ════════════════════════════════════════════════════ */
@@ -2284,11 +2296,11 @@ html[data-theme="gruul"] .btn-primary:hover {
 }
 
 html[data-theme="gruul"] .btn-secondary {
-  border-color: #2d7d35;
-  color: #8fd49a;
+  border-color: #ffffff;
+  color: #ffffff;
 }
 html[data-theme="gruul"] .btn-secondary:hover {
-  background-color: rgba(45, 125, 53, 0.15);
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
 html[data-theme="gruul"] .btn-gold {
@@ -2305,7 +2317,7 @@ html[data-theme="gruul"] .btn-gold:hover {
 }
 
 html[data-theme="gruul"] .hp-stat__number--gold {
-  color: #6ab86e;
+  color: #ffffff;
 }
 
 html[data-theme="gruul"] .standings-table__th,
@@ -2314,6 +2326,10 @@ html[data-theme="gruul"] .standings-table__td--pos,
 html[data-theme="gruul"] .standings-table__td--num {
   color: #ffffff;
 }
+
+/* Primary (#2d7d35) and accent (#e8563a) both fail on dark cards. Use white for links. */
+html[data-theme="gruul"] a { color: #ffffff; }
+html[data-theme="gruul"] a:hover { color: #8fd49a; }
 
 /* ════════════════════════════════════════════════════
    SIMIC · Blue × Green  (WCAG AA, modern touch)
@@ -2381,7 +2397,7 @@ html[data-theme="simic"] .hp-season-badge {
 }
 
 html[data-theme="simic"] .hp-stat__number--gold {
-  color: #0e2320;
+  color: var(--color-accent);
 }
 
 html[data-theme="simic"] .btn-gold {
@@ -2400,6 +2416,10 @@ html[data-theme="simic"] .btn-gold:hover {
 html[data-theme="simic"] .hp-card__viewall:hover {
   color: #5edccb;
 }
+
+/* Primary (#0b7c63) is dark teal — fails on dark cards (3.19:1). Use accent (#3ec9b2) for links. */
+html[data-theme="simic"] a { color: var(--color-accent); }
+html[data-theme="simic"] a:hover { color: #5edccb; }
 
 /* ════════════════════════════════════════════════════
    GOLGARI · Black × Green
@@ -2432,10 +2452,10 @@ html[data-theme="golgari"] .btn-primary {
   color: #ffffff;
 }
 html[data-theme="golgari"] .btn-primary:hover {
-  background-color: #3d8a3d;
-  border-color: #2d6a2d;
+  background-color: #2d6a2d;
+  border-color: #1a4a1a;
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(45, 106, 45, 0.45);
+  box-shadow: 0 4px 14px rgba(45, 106, 45, 0.55);
   transform: translateY(-1px);
 }
 
@@ -2458,10 +2478,10 @@ html[data-theme="golgari"] .btn-gold {
   color: #ffffff;
 }
 html[data-theme="golgari"] .btn-gold:hover {
-  background-color: #4db34d;
-  border-color: #3d8a3d;
+  background-color: #1e5218;
+  border-color: #1a4a1a;
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(45, 106, 45, 0.5);
+  box-shadow: 0 4px 14px rgba(45, 106, 45, 0.6);
   transform: translateY(-1px);
 }
 
@@ -2486,6 +2506,10 @@ html[data-theme="golgari"] .standings-table__td--num {
 html[data-theme="golgari"] .hp-card__viewall:hover {
   color: #3d8a3d;
 }
+
+/* Primary (#2d6a2d) is dark green — fails on dark cards. Use accent (#8fbc3c) for links. */
+html[data-theme="golgari"] a { color: var(--color-accent); }
+html[data-theme="golgari"] a:hover { color: #ffffff; }
 
 [data-card] {
   cursor: default;

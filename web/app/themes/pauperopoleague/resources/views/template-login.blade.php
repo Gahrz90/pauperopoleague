@@ -70,7 +70,7 @@
 
           <div class="reg-form__group" style="flex-direction:row;align-items:center;gap:0.5rem;margin-bottom:1.5rem;">
             <input type="checkbox" id="login-remember" name="remember" value="1" style="width:1rem;height:1rem;accent-color:var(--color-accent);flex-shrink:0;">
-            <label class="form-label" for="login-remember" style="margin:0;font-weight:400;color:var(--color-neutral-300);">
+            <label class="form-label" for="login-remember" style="margin:0;font-weight:400;">
               Ricordami
             </label>
           </div>

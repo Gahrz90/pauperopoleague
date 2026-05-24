@@ -114,6 +114,9 @@
                     <span class="deck-card__player">
                       <span style="font-family:var(--font-mono);font-size:0.6875rem;color:var(--color-neutral-500);margin-right:0.375rem;">#{{ $i + 1 }}</span>
                       {{ $deck['nome_giocatore'] }}
+                      @if(!empty($deck['spicy']))
+                        <span title="Spicy deck" style="margin-left:0.25rem;">🌶️</span>
+                      @endif
                     </span>
                     <span class="deck-card__archetype">{{ $deck['archetipo'] }}</span>
                     <span class="deck-card__toggle">Vedi lista</span>

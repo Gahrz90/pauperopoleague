@@ -139,7 +139,7 @@ class TaxonomyLega extends Composer
                 ? ($dt->format('d') . ' ' . $mesi[(int) $dt->format('n') - 1] . ' · ' . $dt->format('H:i'))
                 : null;
 
-            $n = count(get_field('mazzi', $post->ID) ?: []);
+            $n = (int) get_field('numero_partecipanti', $post->ID);
 
             return [
                 'titolo'      => get_the_title($post->ID),

@@ -1,6 +1,7 @@
 <!doctype html>
 <html @php(language_attributes())>
   <head>
+    <script type="text/javascript" src="https://embeds.iubenda.com/widgets/d2056d35-524a-427f-aa7d-740c1dfad0e6.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="@asset('resources/images/logo_pauperopoleague.png')">

@@ -28,9 +28,26 @@ class FrontPage extends Composer
 
     public function giocatoriMediATappa(): int
     {
+        $leghe = get_terms([
+            'taxonomy'   => 'lega',
+            'hide_empty' => true,
+            'orderby'    => 'term_id',
+            'order'      => 'DESC',
+            'number'     => 1,
+        ]);
+
+        if (is_wp_error($leghe) || empty($leghe)) {
+            return 0;
+        }
+
         $tappe = get_posts([
             'post_type'      => 'tappa',
             'posts_per_page' => -1,
+            'tax_query'      => [[
+                'taxonomy' => 'lega',
+                'field'    => 'term_id',
+                'terms'    => $leghe[0]->term_id,
+            ]],
             'meta_query'     => [[
                 'key'     => 'tappa_conclusa',
                 'value'   => '1',
@@ -43,8 +60,7 @@ class FrontPage extends Composer
         }
 
         $totale = array_sum(array_map(function ($post) {
-            $mazzi = get_field('mazzi', $post->ID) ?: [];
-            return \count($mazzi);
+            return (int) get_field('numero_partecipanti', $post->ID);
         }, $tappe));
 
         return (int) round($totale / \count($tappe));

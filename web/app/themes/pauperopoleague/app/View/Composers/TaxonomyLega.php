@@ -13,6 +13,7 @@ class TaxonomyLega extends Composer
         return [
             'classificaLega' => $this->classificaLega(),
             'tappeChiuse'    => $this->tappeChiuse(),
+            'playoffBracket' => $this->playoffBracket(),
         ];
     }
 
@@ -148,5 +149,41 @@ class TaxonomyLega extends Composer
                 'permalink'   => get_permalink($post->ID),
             ];
         }, $tappe);
+    }
+
+    public function playoffBracket(): ?array
+    {
+        $term = $this->currentTerm();
+        if (!$term) {
+            return null;
+        }
+
+        $attivo = get_field('playoff_attivo', 'term_' . $term->term_id);
+        if (!$attivo) {
+            return null;
+        }
+
+        $quarti_raw      = get_field('playoff_quarti', 'term_' . $term->term_id) ?: [];
+        $semifinali_raw  = get_field('playoff_semifinali', 'term_' . $term->term_id) ?: [];
+        $finale_p1       = trim(get_field('playoff_finale_p1', 'term_' . $term->term_id) ?? '');
+        $finale_p2       = trim(get_field('playoff_finale_p2', 'term_' . $term->term_id) ?? '');
+        $finale_vincitore = trim(get_field('playoff_finale_vincitore', 'term_' . $term->term_id) ?? '');
+
+        $normalizeMatch = fn(array $row): array => [
+            'p1'        => trim($row['p1'] ?? ''),
+            'p2'        => trim($row['p2'] ?? ''),
+            'vincitore' => trim($row['vincitore'] ?? ''),
+        ];
+
+        return [
+            'quarti'     => array_map($normalizeMatch, $quarti_raw),
+            'semifinali' => array_map($normalizeMatch, $semifinali_raw),
+            'finale'     => [
+                'p1'        => $finale_p1,
+                'p2'        => $finale_p2,
+                'vincitore' => $finale_vincitore,
+            ],
+            'campione' => $finale_vincitore,
+        ];
     }
 }

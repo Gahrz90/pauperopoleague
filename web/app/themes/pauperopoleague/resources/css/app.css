@@ -1932,6 +1932,170 @@ html[data-theme="azorius"] .inner-dark__eyebrow a.eyebrow-link:hover { color: va
 }
 
 /* ════════════════════════════════════════════════════
+   PLAYOFF BRACKET
+   ════════════════════════════════════════════════════ */
+
+.bracket-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+/* ── Round column ─────────────────────────────────── */
+
+.bracket-round {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.bracket-round__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-neutral-400);
+  margin: 0 0 0.75rem;
+  text-align: center;
+}
+
+.bracket-round__matches {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 1rem;
+  flex: 1;
+}
+
+/* Semifinali: space matches to align with QF pairs */
+.bracket-round__matches--sf {
+  gap: 0;
+  justify-content: space-around;
+}
+
+/* ── Individual match ─────────────────────────────── */
+
+.bracket-match {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-neutral-700);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  min-width: 11rem;
+  background-color: var(--color-neutral-800);
+}
+
+.bracket-match--finale {
+  min-width: 12rem;
+}
+
+/* ── Slot (one player per row) ────────────────────── */
+
+.bracket-slot {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-neutral-300);
+  line-height: 1.35;
+  border-bottom: 1px solid var(--color-neutral-700);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bracket-slot:last-child {
+  border-bottom: none;
+}
+
+.bracket-slot--winner {
+  color: var(--color-accent);
+  font-weight: 700;
+  background-color: rgba(232, 165, 32, 0.08);
+}
+
+.bracket-slot--loser {
+  color: var(--color-neutral-500);
+  text-decoration: line-through;
+}
+
+/* ── Connector (SVG-free, pure CSS) ──────────────── */
+
+.bracket-connector {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-self: stretch;
+  padding: 1.375rem 0; /* offset for label height */
+  gap: 1rem;
+  flex-shrink: 0;
+  width: 1.5rem;
+}
+
+.bracket-connector--sf {
+  gap: 0;
+}
+
+.bracket-connector__group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.bracket-connector__line--top {
+  flex: 1;
+  border-right: 1px solid var(--color-neutral-600);
+  border-bottom: 1px solid var(--color-neutral-600);
+}
+
+.bracket-connector__line--mid {
+  height: 0;
+  border-right: 1px solid var(--color-neutral-600);
+}
+
+.bracket-connector__line--bottom {
+  flex: 1;
+  border-right: 1px solid var(--color-neutral-600);
+  border-top: 1px solid var(--color-neutral-600);
+}
+
+/* ── Champion display ────────────────────────────── */
+
+.bracket-champion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.25rem;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.bracket-champion__trophy {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.bracket-champion__name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1.2;
+}
+
+.bracket-champion__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-neutral-400);
+  margin-top: 0.25rem;
+}
+
+/* ════════════════════════════════════════════════════
    GUILD THEME GRAPHICS
    Background gradients, buttons, and heading colors
    per data-theme. background-attachment:fixed so the

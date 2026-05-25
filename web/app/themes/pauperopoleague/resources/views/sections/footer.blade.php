@@ -22,6 +22,6 @@
 
   <div class="site-footer-credits">
     <p>Pauperopoleague @ Empoli (Italia)</p>
-    <p>Made with ❤️ by Gianluca Bianchini</p>
+    <p>Made with ❤️ by <a href="https://github.com/Gahrz90" target="_blank" rel="noopener noreferrer">Gianluca Bianchini</a></p>
   </div>
 </footer>

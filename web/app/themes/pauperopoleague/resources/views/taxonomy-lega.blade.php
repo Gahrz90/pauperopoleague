@@ -97,114 +97,132 @@
 
       </div>
 
-      {{-- Playoff Bracket --}}
-      @if($playoffBracket)
+      {{-- Playoff Bracket + Podio --}}
+      @if($playoffBracket || $podio)
         @php
-          $quarti     = $playoffBracket['quarti'];
-          $semifinali = $playoffBracket['semifinali'];
-          $finale     = $playoffBracket['finale'];
-          $campione   = $playoffBracket['campione'];
+          $qf    = $playoffBracket ? $playoffBracket['quarti']     : [];
+          $sf    = $playoffBracket ? $playoffBracket['semifinali']  : [];
+          $fin   = $playoffBracket ? $playoffBracket['finale']      : null;
+          $champ = $playoffBracket ? $playoffBracket['campione']    : null;
+
+          $slotClass = function(array $match, string $player): string {
+            if (!$match['vincitore']) return 'b-slot';
+            if ($player === '?')      return 'b-slot b-slot--tbd';
+            return $player === $match['vincitore'] ? 'b-slot b-slot--win' : 'b-slot b-slot--out';
+          };
         @endphp
 
-        <div style="margin-top:3rem;">
+        <div class="b-bracket-section">
+
           <div class="inner-section-header">
             <p class="inner-section-header__label">Playoff Top 8</p>
-            @if($campione)
-              <span class="badge badge-gold">Campione: {{ $campione }}</span>
+            @if($champ)
+              <span class="badge badge-gold">Campione: {{ $champ }}</span>
             @endif
           </div>
 
-          <div class="bracket-wrap">
+          <div class="b-bracket-section__body">
 
-            {{-- Quarti --}}
-            @if($quarti)
-              <div class="bracket-round">
-                <p class="bracket-round__label">Quarti di finale</p>
-                <div class="bracket-round__matches">
-                  @foreach($quarti as $m)
-                    <div class="bracket-match{{ $m['vincitore'] ? ' bracket-match--done' : '' }}">
-                      <div class="bracket-slot{{ $m['vincitore'] && $m['vincitore'] === $m['p1'] ? ' bracket-slot--winner' : ($m['vincitore'] ? ' bracket-slot--loser' : '') }}">
-                        {{ $m['p1'] ?: '—' }}
-                      </div>
-                      <div class="bracket-slot{{ $m['vincitore'] && $m['vincitore'] === $m['p2'] ? ' bracket-slot--winner' : ($m['vincitore'] ? ' bracket-slot--loser' : '') }}">
-                        {{ $m['p2'] ?: '—' }}
-                      </div>
+          @if($playoffBracket)
+          <div class="b-bracket">
+
+            {{-- ── Quarti ──────────────────────────────── --}}
+            <div class="b-round b-round--qf">
+              <p class="b-round__label">Quarti di finale</p>
+              <div class="b-round__body">
+                @foreach($qf as $m)
+                  <div class="b-item">
+                    <div class="b-match">
+                      <div class="{{ $slotClass($m, $m['p1']) }}">{{ $m['p1'] }}</div>
+                      <div class="{{ $slotClass($m, $m['p2']) }}">{{ $m['p2'] }}</div>
                     </div>
-                  @endforeach
-                </div>
-              </div>
-            @endif
-
-            {{-- Connector --}}
-            @if($quarti && $semifinali)
-              <div class="bracket-connector" aria-hidden="true">
-                @foreach($semifinali as $i => $sf)
-                  <div class="bracket-connector__group">
-                    <div class="bracket-connector__line bracket-connector__line--top"></div>
-                    <div class="bracket-connector__line bracket-connector__line--mid"></div>
-                    <div class="bracket-connector__line bracket-connector__line--bottom"></div>
                   </div>
                 @endforeach
               </div>
-            @endif
+            </div>
 
-            {{-- Semifinali --}}
-            @if($semifinali)
-              <div class="bracket-round">
-                <p class="bracket-round__label">Semifinali</p>
-                <div class="bracket-round__matches bracket-round__matches--sf">
-                  @foreach($semifinali as $m)
-                    <div class="bracket-match{{ $m['vincitore'] ? ' bracket-match--done' : '' }}">
-                      <div class="bracket-slot{{ $m['vincitore'] && $m['vincitore'] === $m['p1'] ? ' bracket-slot--winner' : ($m['vincitore'] ? ' bracket-slot--loser' : '') }}">
-                        {{ $m['p1'] ?: '—' }}
-                      </div>
-                      <div class="bracket-slot{{ $m['vincitore'] && $m['vincitore'] === $m['p2'] ? ' bracket-slot--winner' : ($m['vincitore'] ? ' bracket-slot--loser' : '') }}">
-                        {{ $m['p2'] ?: '—' }}
-                      </div>
+            {{-- ── Connector QF→SF (2 groups) ────────── --}}
+            <div class="b-conn-col" aria-hidden="true">
+              <div class="b-conn b-conn--2"></div>
+              <div class="b-conn b-conn--2"></div>
+            </div>
+
+            {{-- ── Semifinali ──────────────────────────── --}}
+            <div class="b-round b-round--sf">
+              <p class="b-round__label">Semifinali</p>
+              <div class="b-round__body">
+                @foreach($sf as $m)
+                  <div class="b-item b-item--x2">
+                    <div class="b-match">
+                      <div class="{{ $slotClass($m, $m['p1']) }}">{{ $m['p1'] }}</div>
+                      <div class="{{ $slotClass($m, $m['p2']) }}">{{ $m['p2'] }}</div>
                     </div>
-                  @endforeach
-                </div>
+                  </div>
+                @endforeach
               </div>
-            @endif
+            </div>
 
-            {{-- Connector SF → Finale --}}
-            @if($semifinali && ($finale['p1'] || $finale['p2']))
-              <div class="bracket-connector bracket-connector--sf" aria-hidden="true">
-                <div class="bracket-connector__group">
-                  <div class="bracket-connector__line bracket-connector__line--top"></div>
-                  <div class="bracket-connector__line bracket-connector__line--mid"></div>
-                  <div class="bracket-connector__line bracket-connector__line--bottom"></div>
-                </div>
-              </div>
-            @endif
+            {{-- ── Connector SF→Final (1 group) ─────── --}}
+            <div class="b-conn-col" aria-hidden="true">
+              <div class="b-conn b-conn--4"></div>
+            </div>
 
-            {{-- Finale --}}
-            @if($finale['p1'] || $finale['p2'])
-              <div class="bracket-round bracket-round--finale">
-                <p class="bracket-round__label">Finale</p>
-                <div class="bracket-round__matches">
-                  <div class="bracket-match bracket-match--finale{{ $finale['vincitore'] ? ' bracket-match--done' : '' }}">
-                    <div class="bracket-slot{{ $finale['vincitore'] && $finale['vincitore'] === $finale['p1'] ? ' bracket-slot--winner' : ($finale['vincitore'] ? ' bracket-slot--loser' : '') }}">
-                      {{ $finale['p1'] ?: '—' }}
-                    </div>
-                    <div class="bracket-slot{{ $finale['vincitore'] && $finale['vincitore'] === $finale['p2'] ? ' bracket-slot--winner' : ($finale['vincitore'] ? ' bracket-slot--loser' : '') }}">
-                      {{ $finale['p2'] ?: '—' }}
-                    </div>
+            {{-- ── Finale ──────────────────────────────── --}}
+            <div class="b-round b-round--final">
+              <p class="b-round__label">Finale</p>
+              <div class="b-round__body">
+                <div class="b-item b-item--x4">
+                  <div class="b-match b-match--final">
+                    <div class="{{ $slotClass($fin, $fin['p1']) }}">{{ $fin['p1'] }}</div>
+                    <div class="{{ $slotClass($fin, $fin['p2']) }}">{{ $fin['p2'] }}</div>
                   </div>
                 </div>
               </div>
-            @endif
+            </div>
 
-            {{-- Champion trophy --}}
-            @if($campione)
-              <div class="bracket-champion">
-                <div class="bracket-champion__trophy" aria-hidden="true">🏆</div>
-                <div class="bracket-champion__name">{{ $campione }}</div>
-                <div class="bracket-champion__label">Campione</div>
+            {{-- ── Champion ─────────────────────────────── --}}
+            @if($champ)
+              <div class="b-champion-col">
+                <div class="b-champion">
+                  <span class="b-champion__trophy" aria-hidden="true">🏆</span>
+                  <span class="b-champion__name">{{ $champ }}</span>
+                  <span class="b-champion__label">Campione</span>
+                </div>
               </div>
             @endif
 
           </div>
+          @endif
+
+          {{-- Podio --}}
+          @if($podio)
+            <div class="b-podio" role="list" aria-label="Podio finale">
+
+              <div class="b-podio__stage b-podio__stage--2" role="listitem">
+                <p class="b-podio__name">{{ $podio['secondo'] ?: '—' }}</p>
+                <div class="b-podio__block">
+                  <span class="b-podio__pos" aria-label="Secondo classificato">2</span>
+                </div>
+              </div>
+
+              <div class="b-podio__stage b-podio__stage--1" role="listitem">
+                <p class="b-podio__name">{{ $podio['primo'] ?: '—' }}</p>
+                <div class="b-podio__block">
+                  <span class="b-podio__pos" aria-label="Primo classificato">1</span>
+                </div>
+              </div>
+
+              <div class="b-podio__stage b-podio__stage--3" role="listitem">
+                <p class="b-podio__name">{{ $podio['terzo'] ?: '—' }}</p>
+                <div class="b-podio__block">
+                  <span class="b-podio__pos" aria-label="Terzo classificato">3</span>
+                </div>
+              </div>
+
+            </div>
+          @endif
+
+          </div>{{-- /.b-bracket-section__body --}}
         </div>
       @endif
 

@@ -14,6 +14,7 @@ class TaxonomyLega extends Composer
             'classificaLega' => $this->classificaLega(),
             'tappeChiuse'    => $this->tappeChiuse(),
             'playoffBracket' => $this->playoffBracket(),
+            'podio'          => $this->podio(),
         ];
     }
 
@@ -151,6 +152,25 @@ class TaxonomyLega extends Composer
         }, $tappe);
     }
 
+    public function podio(): ?array
+    {
+        $term = $this->currentTerm();
+        if (!$term) {
+            return null;
+        }
+
+        $tid = 'term_' . $term->term_id;
+        $p1  = trim(get_field('playoff_podio_1', $tid) ?? '');
+        $p2  = trim(get_field('playoff_podio_2', $tid) ?? '');
+        $p3  = trim(get_field('playoff_podio_3', $tid) ?? '');
+
+        if ($p1 === '' && $p2 === '' && $p3 === '') {
+            return null;
+        }
+
+        return ['primo' => $p1, 'secondo' => $p2, 'terzo' => $p3];
+    }
+
     public function playoffBracket(): ?array
     {
         $term = $this->currentTerm();
@@ -158,32 +178,41 @@ class TaxonomyLega extends Composer
             return null;
         }
 
-        $attivo = get_field('playoff_attivo', 'term_' . $term->term_id);
-        if (!$attivo) {
+        $classifica = $this->classificaLega();
+        if (count($classifica) < 8) {
             return null;
         }
 
-        $quarti_raw      = get_field('playoff_quarti', 'term_' . $term->term_id) ?: [];
-        $semifinali_raw  = get_field('playoff_semifinali', 'term_' . $term->term_id) ?: [];
-        $finale_p1       = trim(get_field('playoff_finale_p1', 'term_' . $term->term_id) ?? '');
-        $finale_p2       = trim(get_field('playoff_finale_p2', 'term_' . $term->term_id) ?? '');
-        $finale_vincitore = trim(get_field('playoff_finale_vincitore', 'term_' . $term->term_id) ?? '');
+        $tid = 'term_' . $term->term_id;
+        $w = fn(string $key): string => trim(get_field($key, $tid) ?? '');
 
-        $normalizeMatch = fn(array $row): array => [
-            'p1'        => trim($row['p1'] ?? ''),
-            'p2'        => trim($row['p2'] ?? ''),
-            'vincitore' => trim($row['vincitore'] ?? ''),
+        // Standard top-8 seeding: 1v8, 4v5, 2v7, 3v6
+        $s = $classifica; // already sorted by points desc
+        $qf = [
+            ['p1' => $s[0]['nome'], 'p2' => $s[7]['nome'], 'vincitore' => $w('playoff_qf1_vincitore')],
+            ['p1' => $s[3]['nome'], 'p2' => $s[4]['nome'], 'vincitore' => $w('playoff_qf2_vincitore')],
+            ['p1' => $s[1]['nome'], 'p2' => $s[6]['nome'], 'vincitore' => $w('playoff_qf3_vincitore')],
+            ['p1' => $s[2]['nome'], 'p2' => $s[5]['nome'], 'vincitore' => $w('playoff_qf4_vincitore')],
+        ];
+
+        $sf1w = $w('playoff_sf1_vincitore');
+        $sf2w = $w('playoff_sf2_vincitore');
+        $finw = $w('playoff_finale_vincitore');
+
+        $sf = [
+            ['p1' => $qf[0]['vincitore'] ?: '?', 'p2' => $qf[1]['vincitore'] ?: '?', 'vincitore' => $sf1w],
+            ['p1' => $qf[2]['vincitore'] ?: '?', 'p2' => $qf[3]['vincitore'] ?: '?', 'vincitore' => $sf2w],
         ];
 
         return [
-            'quarti'     => array_map($normalizeMatch, $quarti_raw),
-            'semifinali' => array_map($normalizeMatch, $semifinali_raw),
+            'quarti'     => $qf,
+            'semifinali' => $sf,
             'finale'     => [
-                'p1'        => $finale_p1,
-                'p2'        => $finale_p2,
-                'vincitore' => $finale_vincitore,
+                'p1'        => $sf[0]['vincitore'] ?: '?',
+                'p2'        => $sf[1]['vincitore'] ?: '?',
+                'vincitore' => $finw,
             ],
-            'campione' => $finale_vincitore,
+            'campione' => $finw,
         ];
     }
 }

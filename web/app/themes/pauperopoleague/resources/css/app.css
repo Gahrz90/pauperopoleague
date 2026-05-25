@@ -59,6 +59,11 @@
 
   /* ── Extra font size (11px) ───────────────────── */
   --font-size-2xs: 0.6875rem;
+
+  /* ── Podio medal colors ───────────────────────── */
+  --podio-gold:   #e8a520;
+  --podio-silver: #C0C0C0;
+  --podio-bronze: #CD7F32;
 }
 
 /* ════════════════════════════════════════════════════
@@ -134,6 +139,42 @@ html[data-theme="simic"] {
   --color-neutral-700:    #173630;
   --color-neutral-800:    #0e2320;
   --color-neutral-900:    #071614;
+}
+
+/* ── Podio medal overrides per theme ──────────────────
+   Gold follows --color-accent on gold-toned themes
+   (dimir, azorius, boros). On themes with non-gold
+   accents (golgari, gruul, simic) gold stays a real
+   gold shade so the medal hierarchy stays recognisable. */
+
+html[data-theme="dimir"]   { --podio-gold: var(--color-accent); }
+html[data-theme="azorius"] {
+  --podio-gold:   var(--color-accent);
+  --podio-silver: #6a7080;   /* darkened for light bg contrast */
+  --podio-bronze: #8a5218;   /* darkened for light bg contrast */
+}
+html[data-theme="azorius"] .b-podio__name {
+  color: #1a2e5c;
+}
+html[data-theme="azorius"] .b-podio__stage--1 .b-podio__name {
+  color: var(--podio-gold);
+}
+html[data-theme="boros"]   { --podio-gold: var(--color-accent); }
+
+html[data-theme="golgari"] {
+  --podio-gold:   #d4a020;
+  --podio-silver: #a8b8a0;
+  --podio-bronze: #8c6b28;
+}
+html[data-theme="gruul"] {
+  --podio-gold:   #d4a020;
+  --podio-silver: #b0a898;
+  --podio-bronze: #a0622a;
+}
+html[data-theme="simic"] {
+  --podio-gold:   #d4a020;
+  --podio-silver: #90b8b0;
+  --podio-bronze: #7a9870;
 }
 
 /* ════════════════════════════════════════════════════
@@ -671,6 +712,30 @@ footer.content-info {
 
 .site-footer-credits p {
   margin: 0;
+}
+
+.site-footer-legal {
+  margin-top: 1rem;
+}
+
+.site-footer-disclaimer a {
+  color: var(--color-accent);
+}
+
+.site-footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.site-footer-social a {
+  color: var(--color-neutral-400);
+  transition: color 0.2s ease;
+}
+
+.site-footer-social a:hover {
+  color: var(--color-accent);
 }
 
 /* ── Hero ──────────────────────────────────────────── */
@@ -1932,70 +1997,102 @@ html[data-theme="azorius"] .inner-dark__eyebrow a.eyebrow-link:hover { color: va
 }
 
 /* ════════════════════════════════════════════════════
-   PLAYOFF BRACKET
+   PLAYOFF BRACKET  (top-8 single elimination)
+
+   Column heights stay aligned because every round col
+   uses flex items whose flex values sum to 4:
+     QF  → 4 items × flex:1 = 4
+     SF  → 2 items × flex:2 = 4
+     F   → 1 item  × flex:4 = 4
+   Connector cols mirror the same unit counts.
    ════════════════════════════════════════════════════ */
 
-.bracket-wrap {
+/* ── Section wrapper ─────────────────────────────── */
+
+.b-bracket-section {
+  margin-top: 3rem;
+}
+
+/* ── Bracket row (horizontally scrollable) ────────── */
+
+.b-bracket {
   display: flex;
-  align-items: center;
-  gap: 0;
+  align-items: stretch;
   overflow-x: auto;
-  padding-bottom: 1rem;
+  padding-bottom: 1.25rem;
+  gap: 0;
 }
 
 /* ── Round column ─────────────────────────────────── */
 
-.bracket-round {
+.b-round {
   display: flex;
   flex-direction: column;
-  gap: 0;
   flex-shrink: 0;
+  min-width: 10.5rem;
 }
 
-.bracket-round__label {
+.b-round__label {
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-neutral-400);
-  margin: 0 0 0.75rem;
-  text-align: center;
+  margin: 0 0 0.5rem;
+  white-space: nowrap;
 }
 
-.bracket-round__matches {
+.b-round__body {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  gap: 1rem;
   flex: 1;
 }
 
-/* Semifinali: space matches to align with QF pairs */
-.bracket-round__matches--sf {
-  gap: 0;
-  justify-content: space-around;
+/* ── Item (one flex cell per match slot) ──────────── */
+
+/* Each item centers its match vertically and emits a
+   right-side arm (::after) that feeds the connector. */
+
+.b-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.b-item--x2 { flex: 2; }
+.b-item--x4 { flex: 4; }
+
+/* Horizontal arm going right from the match box */
+.b-item::after {
+  content: '';
+  display: block;
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-neutral-600);
+  min-width: 3rem;
 }
 
-/* ── Individual match ─────────────────────────────── */
+/* Final round items have no right arm */
+.b-round--final .b-item::after { display: none; }
 
-.bracket-match {
-  display: flex;
-  flex-direction: column;
+/* ── Match box ────────────────────────────────────── */
+
+.b-match {
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+  width: 10rem;
   border: 1px solid var(--color-neutral-700);
-  border-radius: 0.5rem;
+  border-radius: 0.375rem;
   overflow: hidden;
-  min-width: 11rem;
   background-color: var(--color-neutral-800);
 }
 
-.bracket-match--finale {
-  min-width: 12rem;
-}
+.b-match--final { width: 10.5rem; }
 
-/* ── Slot (one player per row) ────────────────────── */
+/* ── Player slot ──────────────────────────────────── */
 
-.bracket-slot {
-  padding: 0.5rem 0.75rem;
+.b-slot {
+  padding: 0.4375rem 0.625rem;
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-neutral-300);
@@ -2005,94 +2102,257 @@ html[data-theme="azorius"] .inner-dark__eyebrow a.eyebrow-link:hover { color: va
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.bracket-slot:last-child {
-  border-bottom: none;
-}
+.b-slot:last-child { border-bottom: none; }
 
-.bracket-slot--winner {
+.b-slot--win {
   color: var(--color-accent);
   font-weight: 700;
-  background-color: rgba(232, 165, 32, 0.08);
+  background-color: rgba(232, 165, 32, 0.07);
 }
-
-.bracket-slot--loser {
-  color: var(--color-neutral-500);
+.b-slot--out {
+  color: var(--color-neutral-600);
   text-decoration: line-through;
 }
+.b-slot--tbd {
+  color: var(--color-neutral-600);
+  font-style: italic;
+}
 
-/* ── Connector (SVG-free, pure CSS) ──────────────── */
+/* ── Connector column ─────────────────────────────── */
 
-.bracket-connector {
+/* Width of the connector area (arm space is in b-item::after) */
+.b-conn-col {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-self: stretch;
-  padding: 1.375rem 0; /* offset for label height */
-  gap: 1rem;
   flex-shrink: 0;
-  width: 1.5rem;
+  width: 0;          /* arms from b-item::after fill this space visually */
+  align-self: stretch;
+  /* label row offset: same height as b-round__label + 0.5rem margin */
+  padding-top: calc(0.6875rem * 1.6 + 0.5rem);
 }
 
-.bracket-connector--sf {
-  gap: 0;
+/* Each connector group pairs N inputs → 1 output.
+   flex value must match the sum of the items it bridges:
+     b-conn--2: bridges 2 QF items (flex:1 each) → flex:2
+     b-conn--4: bridges 2 SF items (flex:2 each) → flex:4        */
+.b-conn {
+  position: relative;
+  flex-shrink: 0;
+}
+.b-conn--2 { flex: 2; }
+.b-conn--4 { flex: 4; }
+
+/* Vertical bar: from 25% (center of top input)
+                 to 75% (center of bottom input)   */
+.b-conn::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  bottom: 25%;
+  width: 1px;
+  background-color: var(--color-neutral-600);
 }
 
-.bracket-connector__group {
+
+
+/* ── Champion column ──────────────────────────────── */
+
+.b-champion-col {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0 0.75rem;
+  /* same top-offset as connector col */
+  padding-top: calc(0.6875rem * 1.6 + 0.5rem);
 }
 
-.bracket-connector__line--top {
-  flex: 1;
-  border-right: 1px solid var(--color-neutral-600);
-  border-bottom: 1px solid var(--color-neutral-600);
+/* Short horizontal arm from final match to champion */
+.b-champion-arm {
+  display: none; /* arm already handled by b-item::after on final round… */
 }
 
-.bracket-connector__line--mid {
-  height: 0;
-  border-right: 1px solid var(--color-neutral-600);
-}
-
-.bracket-connector__line--bottom {
-  flex: 1;
-  border-right: 1px solid var(--color-neutral-600);
-  border-top: 1px solid var(--color-neutral-600);
-}
-
-/* ── Champion display ────────────────────────────── */
-
-.bracket-champion {
+.b-champion {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 1rem 1.25rem;
-  flex-shrink: 0;
   text-align: center;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-neutral-700);
+  border-radius: 0.5rem;
+  background-color: var(--color-neutral-800);
+  min-width: 7rem;
 }
 
-.bracket-champion__trophy {
-  font-size: 2rem;
+.b-champion__trophy {
+  font-size: 1.75rem;
   line-height: 1;
-  margin-bottom: 0.5rem;
 }
 
-.bracket-champion__name {
+.b-champion__name {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: var(--color-accent);
   line-height: 1.2;
 }
 
-.bracket-champion__label {
+.b-champion__label {
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-neutral-400);
-  margin-top: 0.25rem;
+}
+
+/* ── Bracket + Podio side-by-side layout ─────────────
+   Bracket fills available space; podio docks to the right.
+   On mobile (≤ 48rem) the podio drops below the bracket.  */
+
+.b-bracket-section__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.b-bracket-section__body .b-bracket {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 48rem) {
+  .b-bracket-section__body {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ── Podio ────────────────────────────────────────────
+   Classic three-block podium: 2nd left, 1st center (tallest),
+   3rd right. Blocks are bottom-aligned so bases are flush.    */
+
+.b-podio {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.375rem;
+  flex-shrink: 0;
+  align-self: center;
+  width: 25vw;
+  padding-bottom: 1.25rem;
+}
+
+@media (max-width: 48rem) {
+  .b-podio {
+    width: 75vw;
+    margin-inline: auto;
+    justify-content: center;
+    padding-bottom: 0;
+  }
+}
+
+.b-podio__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.b-podio__name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-neutral-200);
+  text-align: center;
+  line-height: 1.25;
+  word-break: break-word;
+  margin: 0;
+}
+
+.b-podio__stage--1 .b-podio__name {
+  color: var(--podio-gold);
+}
+
+.b-podio__block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 0.375rem 0.375rem 0 0;
+  border: 1px solid var(--color-neutral-700);
+  border-bottom: none;
+  background-color: var(--color-neutral-800);
+}
+
+.b-podio__stage--1 .b-podio__block {
+  height: 5rem;
+  background-color: color-mix(in srgb, var(--podio-gold) 12%, transparent);
+  border-color: var(--podio-gold);
+}
+
+.b-podio__stage--2 .b-podio__block {
+  height: 3.5rem;
+  border-color: var(--podio-silver);
+  background-color: color-mix(in srgb, var(--podio-silver) 8%, transparent);
+}
+
+.b-podio__stage--3 .b-podio__block {
+  height: 2.25rem;
+  border-color: var(--podio-bronze);
+  background-color: color-mix(in srgb, var(--podio-bronze) 8%, transparent);
+}
+
+.b-podio__pos {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--color-neutral-400);
+}
+
+.b-podio__stage--1 .b-podio__pos {
+  font-size: 1.5rem;
+  color: var(--podio-gold);
+}
+
+.b-podio__stage--2 .b-podio__pos {
+  color: var(--podio-silver);
+}
+
+.b-podio__stage--3 .b-podio__pos {
+  color: var(--podio-bronze);
+}
+
+/* ── Responsive: shrink bracket on smaller viewports ─
+   Breakpoint 1 (≤ 640px): tablet / large phone
+   Total bracket width at these values ≈ 520px          */
+@media (max-width: 40rem) {
+  .b-round        { min-width: 0; }
+  .b-match        { width: 7rem; }
+  .b-match--final { width: 7rem; }
+  .b-item::after  { min-width: 2rem; }
+  .b-slot         { font-size: 0.75rem; padding: 0.375rem 0.5rem; }
+  .b-champion     { min-width: 5rem; padding: 0.625rem 0.75rem; }
+  .b-champion__name   { font-size: 0.8125rem; }
+  .b-champion__trophy { font-size: 1.5rem; }
+}
+
+/* Breakpoint 2 (≤ 416px): small phone (360–416px)
+   Container has px-4 (1rem each side) → usable ≈ 328px
+   Total bracket width at these values ≈ 318px          */
+@media (max-width: 26rem) {
+  .b-match        { width: 4.75rem; }
+  .b-match--final { width: 4.75rem; }
+  .b-item::after  { min-width: 0.75rem; }
+  .b-round__label { font-size: 0.5625rem; }
+  .b-slot         { font-size: 0.625rem; padding: 0.25rem 0.375rem; }
+  .b-conn-col     { padding-top: calc(0.5625rem * 1.6 + 0.5rem); }
+  .b-champion-col { padding-inline: 0.375rem; padding-top: calc(0.5625rem * 1.6 + 0.5rem); }
+  .b-champion     { min-width: 3.5rem; padding: 0.5rem 0.5rem; }
+  .b-champion__name   { font-size: 0.6875rem; }
+  .b-champion__trophy { font-size: 1.125rem; }
+  .b-champion__label  { font-size: 0.5rem; }
 }
 
 /* ════════════════════════════════════════════════════

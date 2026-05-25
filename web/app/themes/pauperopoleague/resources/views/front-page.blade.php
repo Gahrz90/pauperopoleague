@@ -88,7 +88,7 @@
         {{-- Season Standings --}}
         <div class="hp-card">
           <div class="hp-card__header">
-            <p class="hp-card__eyebrow" style="margin-bottom:0;">CLASSIFICA LEGA</p>
+            <p class="hp-card__eyebrow" style="margin-bottom:0;">CLASSIFICA LEGA TOP 10</p>
             <a href="{{ $legaUrl }}" class="hp-card__viewall">Vedi tutto →</a>
           </div>
 

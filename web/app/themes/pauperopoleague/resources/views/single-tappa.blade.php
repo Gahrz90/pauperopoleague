@@ -197,7 +197,17 @@
           data-tappa-id="{{ $tappa_id }}"
           data-rest-url="{{ rest_url('paupero/v1/decklist') }}"
           data-rest-nonce="{{ wp_create_nonce('wp_rest') }}"
-          data-user-nome="{{ is_user_logged_in() ? wp_get_current_user()->display_name : '' }}"
+          @php
+            if (is_user_logged_in()) {
+              $u         = wp_get_current_user();
+              $firstName = get_user_meta($u->ID, 'first_name', true);
+              $lastName  = get_user_meta($u->ID, 'last_name', true);
+              $fullName  = trim("$firstName $lastName") ?: $u->display_name;
+            } else {
+              $fullName = '';
+            }
+          @endphp
+          data-user-nome="{{ $fullName }}"
         >
 
           {{-- Step 1: verify code --}}
@@ -280,8 +290,9 @@
             </button>
 
             <p class="alert alert-error" id="errore-form" style="margin-top:1rem;" hidden></p>
-            <p class="alert alert-success" id="successo-form" style="margin-top:1rem;" hidden></p>
           </div>
+
+          <p class="alert alert-success" id="successo-form" style="margin-top:1rem;" hidden></p>
 
         </section>
 
